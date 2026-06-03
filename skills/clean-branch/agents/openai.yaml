@@ -1,7 +1,0 @@
-interface:
-  display_name: "Clean Branch"
-  short_description: "Keep master context clean with branches."
-  default_prompt: "Use $clean-branch to split this complex task into interactive branches, keep the master session clean, and only merge approved completion reports."
-
-policy:
-  allow_implicit_invocation: true

@@ -1,4 +1,4 @@
-# Clean Branch Map: <project>
+# Trunkline Map: <project>
 
 ## Snapshot
 
@@ -12,13 +12,13 @@
 
 | Branch | Type | Status | Thread | Task dir | Based on snapshot | Merge policy |
 | --- | --- | --- | --- | --- | --- | --- |
-| CB-ROOT | master | active |  |  |  | approved summaries only |
+| TL-ROOT | master | active |  |  |  | approved summaries only |
 
 ## Visualization
 
 ```mermaid
 flowchart TD
-  ROOT["CB-ROOT Master session"]
+  ROOT["TL-ROOT Master session"]
 ```
 
 ## Active Branches

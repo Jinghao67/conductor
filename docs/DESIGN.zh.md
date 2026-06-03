@@ -1,13 +1,13 @@
-# Clean Branch 设计说明
+# Trunkline 设计说明
 
-`clean-branch` 是一个 context isolation + branch registry skill。它负责在复杂工作流里保持主 session 干净，同时把容易污染上下文的探索、实现、调研、审阅、解释拆到用户可进入的交互式分支 session。
+`trunkline` 是一个 context isolation + branch registry skill。它负责在复杂工作流里保持主 session 干净，同时把容易污染上下文的探索、实现、调研、审阅、解释拆到用户可进入的交互式分支 session。
 
 它不是 Trellis executor，也不是后台 subagent 管理器。它是分支治理层：决定信息应该留在主干、进入交互分支、进入 explainer sidecar，还是进入合并流程。
 
 ## 核心定位
 
 - 主 session 保存全局视图：目标、约束、分支图、全局决策、已批准摘要、风险、下一步。
-- 子分支是用户可进入、可继续对话的 Codex thread，不是一次性后台 worker。
+- 子分支是用户可进入、可继续对话的 AI coding thread，例如 Codex 或 Claude Code session，不是一次性后台 worker。
 - 子分支只继承 `branch brief`，不继承主 session 原始历史。
 - 子分支完成后，只有用户确认完成才生成 `completion report`。
 - 主 session 只有在用户明确选择并入后，才读取 completion report 并压缩合并。
@@ -36,10 +36,10 @@
 
 - 父任务或根任务对应 master session。
 - child task 对应 interactive branch。
-- Codex thread 对应用户实际进入交互的分支 session。
+- AI coding thread 对应用户实际进入交互的分支 session。
 - explainer 是 sidecar thread，默认不创建 Trellis child task。
 - `branch-map.md` 放在父任务目录，给用户看全局分叉图。
-- `task.json.meta.clean_branch` 保存最小机器可读绑定信息。
+- `task.json.meta.trunkline` 保存最小机器可读绑定信息。
 
 推荐结构：
 
@@ -48,21 +48,21 @@
   task.json
   prd.md
   branch-map.md
-  clean-branch.yaml        # optional
+  trunkline.yaml        # optional
 
 .trellis/tasks/<child-task>/
   task.json
   prd.md
   branch-brief.md
   completion-report.md     # 用户确认完成后才生成
-  clean-branch.md          # optional
+  trunkline.md          # optional
 ```
 
-父子关系应优先通过 Trellis 脚本创建，例如 `task.py create --parent` 或 `task.py add-subtask`。`clean-branch` 不应手写 `parent` / `children`，除非脚本不可用或失败。
+父子关系应优先通过 Trellis 脚本创建，例如 `task.py create --parent` 或 `task.py add-subtask`。`trunkline` 不应手写 `parent` / `children`，除非脚本不可用或失败。
 
 ## JSONL 污染边界
 
-`clean-branch` 默认不把 branch brief、completion report、原始对话摘要写入 `implement.jsonl` 或 `check.jsonl`。
+`trunkline` 默认不把 branch brief、completion report、原始对话摘要写入 `implement.jsonl` 或 `check.jsonl`。
 
 只有当用户明确进入 Trellis implementation/check 阶段，并确认某个分支产物是执行或检查必须读取的上下文时，才允许把相应文件加入 JSONL。
 
@@ -82,7 +82,7 @@
 
 没有 Trellis 时，使用：
 
-- `clean-branch.yaml` 作为机器可读 registry
+- `trunkline.yaml` 作为机器可读 registry
 - `branch-map.md` 作为用户可读快照
 - Mermaid 图表示分叉关系
 

@@ -15,13 +15,13 @@ prompt 负责告诉 AI 要做什么，`scripts/install.sh` 负责稳定执行安
 
 `scripts/install.sh` 会：
 
-1. 找到 repo 里的 `skills/clean-branch`
+1. 找到 repo 里的 `skills/trunkline`
 2. 创建 `${CODEX_HOME:-~/.codex}/skills`
-3. 如果已有 `clean-branch`，移动到带时间戳的备份目录
+3. 如果已有 `trunkline`，移动到带时间戳的备份目录
 4. 复制新版 skill
 5. 检查必需文件
 6. 如果本机有 Codex skill validator，就运行校验
 
 ## 当前仓库地址
 
-https://github.com/Jinghao67/clean-branch
+https://github.com/Jinghao67/trunkline

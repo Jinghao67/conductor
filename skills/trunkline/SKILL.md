@@ -1,13 +1,13 @@
 ---
-name: clean-branch
-description: Use when a complex task needs multiple interactive branches, subagents, or Codex threads while keeping the master session context clean through explicit branch briefs, completion reports, and user-approved merges. Especially useful with grill-me, Trellis, research, implementation, writing, and planning workflows that risk context pollution.
+name: trunkline
+description: Use when a complex task needs multiple interactive branches, subagents, or AI coding threads while keeping the master session context clean through explicit branch briefs, completion reports, and user-approved merges. Especially useful with grill-me, Trellis, research, implementation, writing, and planning workflows that risk context pollution.
 ---
 
-# Clean Branch
+# Trunkline
 
 ## Purpose
 
-`clean-branch` is a context isolation and branch registry protocol. It keeps one master session clean while messy exploration, implementation, research, review, or learning happens in separate user-interactive branch sessions.
+`trunkline` is a context isolation and branch registry protocol. It keeps one master session clean while messy exploration, implementation, research, review, or learning happens in separate user-interactive branch sessions.
 
 Use it to decide whether a request belongs in the master session, an interactive branch, an explainer sidecar, or a merge flow. It does not replace Trellis executors or other workflow agents; it governs how branches are created, tracked, completed, and optionally merged.
 
@@ -60,9 +60,9 @@ Create branches only after user confirmation. First show:
 - why it should be a branch
 - expected artifact
 - completion criteria
-- whether it needs a Trellis child task, a Codex thread, or both
+- whether it needs a Trellis child task, an AI coding thread, or both
 
-After confirmation, write a branch brief using `references/branch-brief-template.md`. If thread tools are available, create or bind a Codex thread and give it only the branch brief as the initial prompt. Record the returned `thread_id`; a deep link such as `codex://threads/<thread-id>` is optional and not the source of truth.
+After confirmation, write a branch brief using `references/branch-brief-template.md`. If thread tools are available, create or bind an AI coding thread and give it only the branch brief as the initial prompt. Record the returned `thread_id`; a Codex deep link such as `codex://threads/<thread-id>` is optional when using Codex and is not the source of truth.
 
 If thread creation is unavailable, create the brief and ask the user to start a separate session with it.
 
@@ -111,25 +111,25 @@ When the master snapshot changes in a way that affects an active branch, mark th
 
 ## Trellis Best Practice
 
-With Trellis, map `clean-branch` like this:
+With Trellis, map `trunkline` like this:
 
 - master session: parent/root task
-- interactive branch: Trellis child task plus Codex thread
-- explainer: sidecar Codex thread, not a Trellis child task by default
+- interactive branch: Trellis child task plus a user-enterable AI coding thread
+- explainer: sidecar AI coding thread, not a Trellis child task by default
 - branch map: parent task `branch-map.md`
-- machine binding: `task.json.meta.clean_branch`
+- machine binding: `task.json.meta.trunkline`
 
 Prefer Trellis scripts such as `task.py create --parent` or `task.py add-subtask` for parent/child relationships. Do not manually edit `parent` or `children` unless Trellis scripts are unavailable or fail.
 
-Use `task.json.meta.clean_branch` only for small machine-readable fields:
+Use `task.json.meta.trunkline` only for small machine-readable fields:
 
 ```json
 {
-  "clean_branch": {
-    "branch_id": "CB-001",
+  "trunkline": {
+    "branch_id": "TL-001",
     "branch_type": "interactive",
     "role": "research",
-    "parent_branch_id": "CB-ROOT",
+    "parent_branch_id": "TL-ROOT",
     "thread_id": "thr_xxx",
     "branch_brief_path": ".trellis/tasks/example/branch-brief.md",
     "completion_report_path": ".trellis/tasks/example/completion-report.md",
@@ -147,7 +147,7 @@ Do not add branch briefs, completion reports, or raw conversation summaries to `
 
 If Trellis is not available, maintain:
 
-- `clean-branch.yaml` as the machine-readable registry
+- `trunkline.yaml` as the machine-readable registry
 - `branch-map.md` as the human-readable snapshot
 - Mermaid inside `branch-map.md` for visualization
 

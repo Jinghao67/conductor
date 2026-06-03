@@ -2,9 +2,9 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-source_dir="$repo_root/skills/clean-branch"
+source_dir="$repo_root/skills/trunkline"
 codex_home="${CODEX_HOME:-$HOME/.codex}"
-target_dir="$codex_home/skills/clean-branch"
+target_dir="$codex_home/skills/trunkline"
 
 if [[ ! -d "$source_dir" ]]; then
   echo "Error: skill source not found: $source_dir" >&2
@@ -22,12 +22,12 @@ if [[ -e "$target_dir" ]]; then
   timestamp="$(date +%Y%m%d-%H%M%S)"
   backup_dir="$target_dir.backup-$timestamp"
   mv "$target_dir" "$backup_dir"
-  echo "Existing clean-branch skill backed up to: $backup_dir"
+  echo "Existing trunkline skill backed up to: $backup_dir"
 fi
 
 cp -R "$source_dir" "$target_dir"
 
-echo "Installed clean-branch skill to: $target_dir"
+echo "Installed trunkline skill to: $target_dir"
 
 required_files=(
   "$target_dir/SKILL.md"
@@ -58,4 +58,4 @@ fi
 
 echo
 echo "Next: start a new Codex session and say:"
-echo "Use \$clean-branch to split this complex task into interactive branches, keep the master session clean, and only merge approved completion reports."
+echo "Use \$trunkline to split this complex task into interactive branches, keep the master session clean, and only merge approved completion reports."

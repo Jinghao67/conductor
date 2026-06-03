@@ -4,7 +4,7 @@
 
 ## 产品定位
 
-- [ ] `clean-branch` 是否清楚表达为分支治理层，而不是 Trellis executor？
+- [ ] `trunkline` 是否清楚表达为分支治理层，而不是 Trellis executor？
 - [ ] 是否清楚区分 master session、interactive branch、explainer sidecar？
 - [ ] 是否避免把子分支描述成一次性后台 agent？
 
@@ -18,8 +18,8 @@
 ## Trellis 集成
 
 - [ ] Trellis 映射是否符合你的实际工作流？
-- [ ] `task.json.meta.clean_branch` 字段是否足够但不过度？
-- [ ] 是否应该保留 `clean-branch.yaml` 作为可选 source of truth？
+- [ ] `task.json.meta.trunkline` 字段是否足够但不过度？
+- [ ] 是否应该保留 `trunkline.yaml` 作为可选 source of truth？
 - [ ] 是否应在 README 中加入更具体的 Trellis 命令示例？
 
 ## 模板
@@ -30,7 +30,7 @@
 
 ## 发布前决策
 
-- [ ] GitHub repo 名称是否使用 `clean-branch`？
+- [ ] GitHub repo 名称是否使用 `trunkline`？
 - [ ] 是否添加开源许可证？如果添加，选择 MIT / Apache-2.0 / 其他？
 - [ ] README 是否需要中文版本？
 - [ ] 是否需要 GitHub Actions 校验 skill 格式？
