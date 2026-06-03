@@ -1,5 +1,7 @@
 # Clean Branch
 
+[English](README.md) | [中文](README.zh-CN.md)
+
 Clean Branch is a context hygiene and interactive branch orchestration skill.
 
 It keeps a master session clean while exploratory, implementation-heavy, research-heavy, review-heavy, or explanatory work happens in separate user-interactive branch sessions. A branch only returns to the master session through an explicit completion report and a user-approved merge.
@@ -30,6 +32,7 @@ The goal is not to create background workers. The goal is to make multi-session 
 ```text
 .
 ├── README.md
+├── README.zh-CN.md
 ├── docs/
 │   ├── AI_INSTALL.zh.md
 │   ├── DESIGN.zh.md
