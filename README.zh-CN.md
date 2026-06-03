@@ -10,6 +10,8 @@
 
 Conductor 是一个用于长周期 AI 工作的上下文卫生和交互式分支编排 skill。它的协议本身不绑定工具；这个仓库提供了 Codex-compatible skill 文件夹，也提供了给 Codex 或 Claude Code 的 one-shot 安装 prompt。
 
+Conductor 把一个长项目当作一支乐队来指挥。你和 master session 站在指挥台前，手里只保留总谱：目标、约束、决策和全局结构。每个分支负责自己的声部；explainer sidecar 像排练室，容纳追问、试错和临时理解；真正值得留下的片段，才会被整理后写回总谱。
+
 它保护的是**干净的 master session**，不是单纯的“干净分支”：主 session 只保留全局目标、约束、决策、分支图和已批准摘要；复杂执行和探索进入可交互分支；用户不懂、想细问、想让 AI 详细解释的内容进入一个刻意预留的**脏解释分支**。分支内容只有在用户确认完成，并批准合并后，才会以 completion report 的形式回到 master session。
 
 ## 为什么叫 Conductor

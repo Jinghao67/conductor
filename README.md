@@ -10,6 +10,8 @@
 
 Conductor is a context hygiene and interactive branch orchestration skill for long-running AI work. The protocol is tool-agnostic; this repository includes a Codex-compatible skill folder and one-shot prompts for Codex or Claude Code.
 
+Conductor treats a long project like an orchestra. You and the master session stay at the podium with the score: the goal, constraints, decisions, and shape of the whole piece. Each branch takes its own part, the explainer sidecar becomes the rehearsal room for questions and false starts, and only the passages worth keeping are written back into the score.
+
 It keeps the **master session** clean, cues **interactive branch sessions** for detailed work, and reserves a deliberately **dirty sidecar** where users can ask all the questions that would otherwise poison the master context. Branch context only returns to the master session through a completion report and a user-approved merge.
 
 ## Why Conductor
