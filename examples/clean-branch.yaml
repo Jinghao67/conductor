@@ -1,0 +1,33 @@
+root:
+  id: CB-ROOT
+  title: Main session
+  mode: trunk
+  status: active
+  snapshot_id: snap-2026-06-03-001
+
+branches:
+  - id: CB-001
+    title: API contract exploration
+    type: interactive
+    role: design
+    status: active
+    task_dir: .trellis/tasks/api-contract
+    thread_id: thr_example_api_contract
+    merge_policy: explicit_user_confirm
+    based_on_snapshot_id: snap-2026-06-03-001
+    branch_brief_path: .trellis/tasks/api-contract/branch-brief.md
+    completion_report_path: .trellis/tasks/api-contract/completion-report.md
+
+  - id: CB-E01
+    title: Explain Trellis JSONL context
+    type: explainer
+    role: explainer
+    status: active
+    thread_id: thr_example_explainer
+    merge_policy: no_merge_by_default
+    based_on_snapshot_id: snap-2026-06-03-001
+
+snapshots:
+  - id: snap-2026-06-03-001
+    created_at: 2026-06-03
+    note: Initial clean-branch registry.

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "clean_branch": {
+      "branch_id": "CB-001",
+      "branch_type": "interactive",
+      "role": "design",
+      "parent_branch_id": "CB-ROOT",
+      "task_dir": ".trellis/tasks/api-contract",
+      "thread_id": "thr_example_api_contract",
+      "codex_deep_link": "codex://threads/thr_example_api_contract",
+      "branch_brief_path": ".trellis/tasks/api-contract/branch-brief.md",
+      "completion_report_path": ".trellis/tasks/api-contract/completion-report.md",
+      "status": "active",
+      "brief_version": 1,
+      "based_on_snapshot_id": "snap-2026-06-03-001",
+      "merge_policy": "explicit_user_confirm"
+    }
+  }
+}
