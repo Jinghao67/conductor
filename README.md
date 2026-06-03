@@ -119,6 +119,40 @@ With Trellis, Trunkline maps naturally onto parent and child tasks:
 
 Trunkline should prefer Trellis task scripts for parent/child relationships and should not use `implement.jsonl` or `check.jsonl` as a dumping ground for branch chat history.
 
+## Grill-me + Trellis Workflow
+
+Trunkline is especially useful when paired with grill-me and Trellis:
+
+| Tool | Role |
+| --- | --- |
+| `grill-me` | Interrogate the idea until goals, non-goals, constraints, and acceptance criteria are clear. |
+| `Trunkline` | Route context into the clean trunk, interactive branches, dirty explainer sidecar, or merge flow. |
+| `Trellis` | Persist the structure as parent/child tasks and keep branch artifacts discoverable. |
+
+Recommended flow:
+
+1. Start with grill-me in the master session.
+2. When multiple independent directions appear, enable Trunkline.
+3. Map the master session to a Trellis parent/root task.
+4. Map each interactive branch to a Trellis child task and a user-enterable AI coding thread.
+5. Keep the dirty explainer sidecar outside Trellis child tasks by default.
+6. Generate completion reports only after the user confirms a branch is done.
+7. Merge only the approved compressed report back into the master session.
+
+Copyable starter prompt:
+
+```text
+Use $grill-me to clarify and pressure-test my requirements first. Once the discussion reveals multiple independent directions, enable $trunkline.
+
+Treat this session as the master session. Keep only global goals, constraints, the Trellis branch map, key decisions, risks, and approved summaries here.
+
+Use Trellis to persist the structure: the master session maps to a parent/root task, and each interactive branch maps to a Trellis child task plus a user-enterable AI coding thread.
+
+Split complex exploration, implementation, review, and research into interactive branches. Create a dirty explainer sidecar for questions I do not fully understand; do not merge that sidecar into the master session by default.
+
+For each branch, generate a branch brief before opening the branch. Only after I confirm the branch is complete, generate a completion report. Ask me whether to merge it back into the master session, and merge only the approved compressed summary.
+```
+
 ## Status
 
 Initial public draft. License is intentionally left TBD.

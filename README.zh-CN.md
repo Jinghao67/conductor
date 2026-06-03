@@ -119,6 +119,40 @@ Trunkline 遵守几条硬规则：
 
 Trunkline 应优先使用 Trellis task scripts 创建父子任务关系，不应把 `implement.jsonl` 或 `check.jsonl` 当成分支聊天历史的堆放区。
 
+## grill-me + Trellis 工作流
+
+Trunkline 特别适合和 grill-me、Trellis 一起用：
+
+| 工具 | 分工 |
+| --- | --- |
+| `grill-me` | 先把想法问透，澄清目标、非目标、约束和验收标准。 |
+| `Trunkline` | 判断上下文应该留在干净主干、进入可交互分支、进入脏解释 sidecar，还是进入合并流程。 |
+| `Trellis` | 把结构持久化成 parent/child tasks，让分支产物可追踪、可回看。 |
+
+推荐流程：
+
+1. 在 master session 里先用 grill-me 追问需求。
+2. 一旦出现多个可独立推进的方向，就启用 Trunkline。
+3. master session 映射成 Trellis parent/root task。
+4. 每个可交互分支映射成 Trellis child task，并绑定一个用户可进入的 AI coding thread。
+5. dirty explainer sidecar 默认不建 Trellis child task。
+6. 只有用户确认分支完成后，才生成 completion report。
+7. 只有用户批准后，才把压缩后的 report 合并回 master session。
+
+可直接复制的启动 prompt：
+
+```text
+用 $grill-me 先追问和打磨我的需求，直到目标、非目标、约束和验收标准清楚。过程中一旦出现多个可独立推进的方向，就启用 $trunkline。
+
+把当前 session 作为 master session，只保留全局目标、约束、Trellis 分支图、关键决策、风险和批准后的摘要。
+
+用 Trellis 持久化结构：master session 映射成 parent/root task；每个可交互分支映射成 Trellis child task，并绑定一个用户可进入的 AI coding thread。
+
+把复杂探索、实现、review、调研拆成可交互分支。另开一个 dirty explainer sidecar，专门让我问不懂的问题，默认不要并入 master session。
+
+每个分支在打开前先生成 branch brief。只有我确认分支完成后，才生成 completion report。然后询问我是否合并回 master session，并且只合并我批准过的压缩摘要。
+```
+
 ## 状态
 
 初始公开草稿。License 目前刻意保留为 TBD。
