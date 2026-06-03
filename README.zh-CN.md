@@ -1,4 +1,4 @@
-# Trunkline
+# Conductor
 
 [English](README.md) | [中文](README.zh-CN.md)
 
@@ -8,11 +8,11 @@
 ![显式合并](https://img.shields.io/badge/merge-explicit_only-ef4444)
 ![Codex + Claude Code](https://img.shields.io/badge/works_with-Codex_%2B_Claude_Code-8b5cf6)
 
-Trunkline 是一个用于长周期 AI 工作的上下文卫生和交互式分支编排 skill。它的协议本身不绑定工具；这个仓库提供了 Codex-compatible skill 文件夹，也提供了给 Codex 或 Claude Code 的 one-shot 安装 prompt。
+Conductor 是一个用于长周期 AI 工作的上下文卫生和交互式分支编排 skill。它的协议本身不绑定工具；这个仓库提供了 Codex-compatible skill 文件夹，也提供了给 Codex 或 Claude Code 的 one-shot 安装 prompt。
 
-它保护的是**干净主干**，不是单纯的“干净分支”：主 session 只保留全局目标、约束、决策、分支图和已批准摘要；复杂执行和探索进入可交互分支；用户不懂、想细问、想让 AI 详细解释的内容进入一个刻意预留的**脏解释分支**。分支内容只有在用户确认完成，并批准合并后，才会以 completion report 的形式回到主干。
+它保护的是**干净的 master session**，不是单纯的“干净分支”：主 session 只保留全局目标、约束、决策、分支图和已批准摘要；复杂执行和探索进入可交互分支；用户不懂、想细问、想让 AI 详细解释的内容进入一个刻意预留的**脏解释分支**。分支内容只有在用户确认完成，并批准合并后，才会以 completion report 的形式回到 master session。
 
-## 为什么叫 Trunkline
+## 为什么叫 Conductor
 
 很多 AI 工作流不是输在模型能力，而是输在上下文混杂。所有东西都塞进一个会话后，主 session 很快变成：
 
@@ -24,17 +24,17 @@ Trunkline 是一个用于长周期 AI 工作的上下文卫生和交互式分支
 - review 记录
 - 最终过程文档
 
-即使用过 Superpowers 或 grill-me 这类追问工作流，用户也不一定真的完全理解自己的项目。这个很正常。Trunkline 专门给这种“不完全理解”预留了位置：一个可以放心提问、补课、反复解释的脏 sidecar，同时让主 session 继续像项目控制台一样清晰。
+即使用过 Superpowers 或 grill-me 这类追问工作流，用户也不一定真的完全理解自己的项目。这个很正常。Conductor 专门给这种“不完全理解”预留了位置：一个可以放心提问、补课、反复解释的脏 sidecar，同时让 master session 继续像项目控制台一样清晰。
 
 ## 它保护了什么
 
 | 区域 | 会发生什么 | 为什么重要 |
 | --- | --- | --- |
-| 干净主干 | master session 只保存目标、约束、分支 registry、决策、风险和已批准摘要。 | 用户随时能回到全局视图，不会被执行噪声淹没。 |
+| 干净 master | master session 只保存目标、约束、分支 registry、决策、风险和已批准摘要。 | 用户随时能回到全局视图，不会被执行噪声淹没。 |
 | 脏解释分支 | 专门吸收长篇解释、背景学习、概念补课和“我这里没懂”的问题。 | 用户可以放心学习，不污染主 session。 |
 | 可交互分支 | 子 agent 是用户能进入的 session，不是看不见的一次性后台 worker。 | 用户可以继续追问、纠偏、细化，而不必手动重开 session、手动复制 context。 |
-| 自动 branch brief | Trunkline 为每个分支准备启动上下文。 | 用户不用反复粘贴项目目标、约束和上下文。 |
-| 显式合并门 | 分支只有在用户确认完成后才生成 report，只有用户批准后才合并。 | 主干只增长经过筛选的长期知识，不吸收过程噪声。 |
+| 自动 branch brief | Conductor 为每个分支准备启动上下文。 | 用户不用反复粘贴项目目标、约束和上下文。 |
+| 显式合并门 | 分支只有在用户确认完成后才生成 report，只有用户批准后才合并。 | master context 只增长经过筛选的长期知识，不吸收过程噪声。 |
 | 可视化 registry | branch map、snapshot 和 Trellis-compatible metadata 记录每个分支在哪里、状态如何。 | 过程更可审计、可恢复，也更容易回退。 |
 
 ## 仓库结构
@@ -49,7 +49,7 @@ Trunkline 是一个用于长周期 AI 工作的上下文卫生和交互式分支
 │   └── REVIEW_CHECKLIST.zh.md
 ├── examples/
 │   ├── branch-map.md
-│   ├── trunkline.yaml
+│   ├── conductor.yaml
 │   └── trellis-task-meta.json
 ├── prompts/
 │   ├── install-with-claude-code.md
@@ -57,7 +57,7 @@ Trunkline 是一个用于长周期 AI 工作的上下文卫生和交互式分支
 ├── scripts/
 │   └── install.sh
 └── skills/
-    └── trunkline/
+    └── conductor/
         ├── SKILL.md
         ├── agents/openai.yaml
         └── references/
@@ -71,7 +71,7 @@ Trunkline 是一个用于长周期 AI 工作的上下文卫生和交互式分支
 把 skill 文件夹复制到 Codex skills 目录：
 
 ```bash
-cp -R skills/trunkline ~/.codex/skills/trunkline
+cp -R skills/conductor ~/.codex/skills/conductor
 ```
 
 也可以在仓库根目录运行安装脚本：
@@ -83,7 +83,7 @@ bash scripts/install.sh
 然后开启一个新的 Codex session，并这样触发：
 
 ```text
-Use $trunkline to split this complex task into interactive branches, keep the master session clean, and only merge approved completion reports.
+Use $conductor to split this complex task into interactive branches, keep the master session clean, and only merge approved completion reports.
 ```
 
 ## 交给 AI 一键安装
@@ -97,7 +97,7 @@ Use $trunkline to split this complex task into interactive branches, keep the ma
 
 ## 核心协议
 
-Trunkline 遵守几条硬规则：
+Conductor 遵守几条硬规则：
 
 1. master session 只保存全局上下文。
 2. branch session 是用户可进入的交互线程，不是一次性后台 agent。
@@ -109,30 +109,30 @@ Trunkline 遵守几条硬规则：
 
 ## Trellis 最佳实践
 
-在 Trellis 中，Trunkline 可以自然映射到父子任务：
+在 Trellis 中，Conductor 可以自然映射到父子任务：
 
 - parent/root task：master session
 - child task：interactive branch
 - Codex / Claude Code thread：用户真正进入交互的分支会话
 - `branch-map.md`：人类可读的分支视图
-- `task.json.meta.trunkline`：最小机器可读绑定信息
+- `task.json.meta.conductor`：最小机器可读绑定信息
 
-Trunkline 应优先使用 Trellis task scripts 创建父子任务关系，不应把 `implement.jsonl` 或 `check.jsonl` 当成分支聊天历史的堆放区。
+Conductor 应优先使用 Trellis task scripts 创建父子任务关系，不应把 `implement.jsonl` 或 `check.jsonl` 当成分支聊天历史的堆放区。
 
 ## grill-me + Trellis 工作流
 
-Trunkline 特别适合和 grill-me、Trellis 一起用：
+Conductor 特别适合和 grill-me、Trellis 一起用：
 
 | 工具 | 分工 |
 | --- | --- |
 | `grill-me` | 先把想法问透，澄清目标、非目标、约束和验收标准。 |
-| `Trunkline` | 判断上下文应该留在干净主干、进入可交互分支、进入脏解释 sidecar，还是进入合并流程。 |
+| `Conductor` | 判断上下文应该留在干净 master、进入可交互分支、进入脏解释 sidecar，还是进入合并流程。 |
 | `Trellis` | 把结构持久化成 parent/child tasks，让分支产物可追踪、可回看。 |
 
 推荐流程：
 
 1. 在 master session 里先用 grill-me 追问需求。
-2. 一旦出现多个可独立推进的方向，就启用 Trunkline。
+2. 一旦出现多个可独立推进的方向，就启用 Conductor。
 3. master session 映射成 Trellis parent/root task。
 4. 每个可交互分支映射成 Trellis child task，并绑定一个用户可进入的 AI coding thread。
 5. dirty explainer sidecar 默认不建 Trellis child task。
@@ -142,7 +142,7 @@ Trunkline 特别适合和 grill-me、Trellis 一起用：
 可直接复制的启动 prompt：
 
 ```text
-用 $grill-me 先追问和打磨我的需求，直到目标、非目标、约束和验收标准清楚。过程中一旦出现多个可独立推进的方向，就启用 $trunkline。
+用 $grill-me 先追问和打磨我的需求，直到目标、非目标、约束和验收标准清楚。过程中一旦出现多个可独立推进的方向，就启用 $conductor。
 
 把当前 session 作为 master session，只保留全局目标、约束、Trellis 分支图、关键决策、风险和批准后的摘要。
 

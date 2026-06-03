@@ -1,4 +1,4 @@
-# Trunkline
+# Conductor
 
 [English](README.md) | [中文](README.zh-CN.md)
 
@@ -8,11 +8,11 @@
 ![Explicit merge gate](https://img.shields.io/badge/merge-explicit_only-ef4444)
 ![Codex + Claude Code](https://img.shields.io/badge/works_with-Codex_%2B_Claude_Code-8b5cf6)
 
-Trunkline is a context hygiene and interactive branch orchestration skill for long-running AI work. The protocol is tool-agnostic; this repository includes a Codex-compatible skill folder and one-shot prompts for Codex or Claude Code.
+Conductor is a context hygiene and interactive branch orchestration skill for long-running AI work. The protocol is tool-agnostic; this repository includes a Codex-compatible skill folder and one-shot prompts for Codex or Claude Code.
 
-It keeps the **main trunk** clean, creates **interactive branch sessions** for detailed work, and reserves a deliberately **dirty sidecar** where users can ask all the questions that would otherwise poison the master context. Branch context only returns to the trunk through a completion report and a user-approved merge.
+It keeps the **master session** clean, cues **interactive branch sessions** for detailed work, and reserves a deliberately **dirty sidecar** where users can ask all the questions that would otherwise poison the master context. Branch context only returns to the master session through a completion report and a user-approved merge.
 
-## Why Trunkline
+## Why Conductor
 
 Most AI workflows do not fail because the model cannot do the work. They fail because everything lands in one overloaded conversation:
 
@@ -24,17 +24,17 @@ Most AI workflows do not fail because the model cannot do the work. They fail be
 - review notes
 - final process documentation
 
-Even after workflows like Superpowers or grill-me, users may still not fully understand every part of their own project. That is normal. Trunkline gives that uncertainty a dedicated place: a dirty explainer sidecar for deep questions, tutorials, and repeated clarification, while the master session stays useful as a project control room.
+Even after workflows like Superpowers or grill-me, users may still not fully understand every part of their own project. That is normal. Conductor gives that uncertainty a dedicated place: a dirty explainer sidecar for deep questions, tutorials, and repeated clarification, while the master session stays useful as the project control room.
 
 ## What It Protects
 
 | Area | What happens | Why it matters |
 | --- | --- | --- |
-| Clean trunk | The master session keeps only goals, constraints, branch registry, decisions, risks, and approved summaries. | You can always return to the project overview without digging through noisy execution history. |
+| Clean master | The master session keeps only goals, constraints, branch registry, decisions, risks, and approved summaries. | You can always return to the project overview without digging through noisy execution history. |
 | Dirty sidecar | A dedicated explainer session absorbs long explanations, background learning, and "I do not fully understand this yet" questions. | Users can learn freely without contaminating the master session. |
 | Interactive branches | Subagents are user-enterable sessions, not invisible background workers. | You can steer, question, and refine each branch without manually reopening sessions or reconstructing context. |
-| Automatic branch briefs | Trunkline prepares the right starting context for each branch. | The user does not have to repeatedly paste goals, constraints, and hand-written context. |
-| Explicit merge gate | A branch only returns through a completion report after user-confirmed completion. | The trunk grows through deliberate knowledge, not accidental context spillover. |
+| Automatic branch briefs | Conductor prepares the right starting context for each branch. | The user does not have to repeatedly paste goals, constraints, and hand-written context. |
+| Explicit merge gate | A branch only returns through a completion report after user-confirmed completion. | The master context grows through deliberate knowledge, not accidental context spillover. |
 | Visual registry | Branch maps, snapshots, and Trellis-compatible metadata track where work lives. | The process becomes auditable, recoverable, and easier to roll back. |
 
 ## Repository Layout
@@ -49,7 +49,7 @@ Even after workflows like Superpowers or grill-me, users may still not fully und
 │   └── REVIEW_CHECKLIST.zh.md
 ├── examples/
 │   ├── branch-map.md
-│   ├── trunkline.yaml
+│   ├── conductor.yaml
 │   └── trellis-task-meta.json
 ├── prompts/
 │   ├── install-with-claude-code.md
@@ -57,7 +57,7 @@ Even after workflows like Superpowers or grill-me, users may still not fully und
 ├── scripts/
 │   └── install.sh
 └── skills/
-    └── trunkline/
+    └── conductor/
         ├── SKILL.md
         ├── agents/openai.yaml
         └── references/
@@ -71,7 +71,7 @@ Even after workflows like Superpowers or grill-me, users may still not fully und
 Copy the skill folder into your Codex skills directory:
 
 ```bash
-cp -R skills/trunkline ~/.codex/skills/trunkline
+cp -R skills/conductor ~/.codex/skills/conductor
 ```
 
 Or run the local installer from the repository root:
@@ -83,7 +83,7 @@ bash scripts/install.sh
 Then start a new Codex session and invoke:
 
 ```text
-Use $trunkline to split this complex task into interactive branches, keep the master session clean, and only merge approved completion reports.
+Use $conductor to split this complex task into interactive branches, keep the master session clean, and only merge approved completion reports.
 ```
 
 ## AI-Assisted Install
@@ -97,7 +97,7 @@ Paste the whole prompt into the target AI coding agent. The prompts already poin
 
 ## Core Protocol
 
-Trunkline follows a few hard rules:
+Conductor follows a few hard rules:
 
 1. The master session owns global context only.
 2. Branch sessions are interactive threads, not one-shot background agents.
@@ -109,30 +109,30 @@ Trunkline follows a few hard rules:
 
 ## Trellis Best Practice
 
-With Trellis, Trunkline maps naturally onto parent and child tasks:
+With Trellis, Conductor maps naturally onto parent and child tasks:
 
 - parent/root task: master session
 - child task: interactive branch
 - Codex / Claude Code thread: user-enterable conversation for the branch
 - `branch-map.md`: human-readable branch view
-- `task.json.meta.trunkline`: minimal machine-readable binding
+- `task.json.meta.conductor`: minimal machine-readable binding
 
-Trunkline should prefer Trellis task scripts for parent/child relationships and should not use `implement.jsonl` or `check.jsonl` as a dumping ground for branch chat history.
+Conductor should prefer Trellis task scripts for parent/child relationships and should not use `implement.jsonl` or `check.jsonl` as a dumping ground for branch chat history.
 
 ## Grill-me + Trellis Workflow
 
-Trunkline is especially useful when paired with grill-me and Trellis:
+Conductor is especially useful when paired with grill-me and Trellis:
 
 | Tool | Role |
 | --- | --- |
 | `grill-me` | Interrogate the idea until goals, non-goals, constraints, and acceptance criteria are clear. |
-| `Trunkline` | Route context into the clean trunk, interactive branches, dirty explainer sidecar, or merge flow. |
+| `Conductor` | Route context into the clean master, interactive branches, dirty explainer sidecar, or merge flow. |
 | `Trellis` | Persist the structure as parent/child tasks and keep branch artifacts discoverable. |
 
 Recommended flow:
 
 1. Start with grill-me in the master session.
-2. When multiple independent directions appear, enable Trunkline.
+2. When multiple independent directions appear, enable Conductor.
 3. Map the master session to a Trellis parent/root task.
 4. Map each interactive branch to a Trellis child task and a user-enterable AI coding thread.
 5. Keep the dirty explainer sidecar outside Trellis child tasks by default.
@@ -142,7 +142,7 @@ Recommended flow:
 Copyable starter prompt:
 
 ```text
-Use $grill-me to clarify and pressure-test my requirements first. Once the discussion reveals multiple independent directions, enable $trunkline.
+Use $grill-me to clarify and pressure-test my requirements first. Once the discussion reveals multiple independent directions, enable $conductor.
 
 Treat this session as the master session. Keep only global goals, constraints, the Trellis branch map, key decisions, risks, and approved summaries here.
 

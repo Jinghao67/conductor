@@ -1,0 +1,7 @@
+interface:
+  display_name: "Conductor"
+  short_description: "Clean trunk, dirty sidecar, live branches."
+  default_prompt: "Use $conductor to split this complex task into interactive branches, keep the master session clean, and only merge approved completion reports."
+
+policy:
+  allow_implicit_invocation: true

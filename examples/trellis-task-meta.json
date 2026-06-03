@@ -1,10 +1,10 @@
 {
   "meta": {
-    "trunkline": {
-      "branch_id": "TL-001",
+    "conductor": {
+      "branch_id": "CD-001",
       "branch_type": "interactive",
       "role": "design",
-      "parent_branch_id": "TL-ROOT",
+      "parent_branch_id": "CD-ROOT",
       "task_dir": ".trellis/tasks/api-contract",
       "thread_id": "thr_example_api_contract",
       "codex_deep_link": "codex://threads/thr_example_api_contract",

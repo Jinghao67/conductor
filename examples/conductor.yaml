@@ -1,12 +1,12 @@
 root:
-  id: TL-ROOT
+  id: CD-ROOT
   title: Main session
   mode: trunk
   status: active
   snapshot_id: snap-2026-06-03-001
 
 branches:
-  - id: TL-001
+  - id: CD-001
     title: API contract exploration
     type: interactive
     role: design
@@ -18,7 +18,7 @@ branches:
     branch_brief_path: .trellis/tasks/api-contract/branch-brief.md
     completion_report_path: .trellis/tasks/api-contract/completion-report.md
 
-  - id: TL-E01
+  - id: CD-E01
     title: Explain Trellis JSONL context
     type: explainer
     role: explainer
@@ -30,4 +30,4 @@ branches:
 snapshots:
   - id: snap-2026-06-03-001
     created_at: 2026-06-03
-    note: Initial trunkline registry.
+    note: Initial conductor registry.

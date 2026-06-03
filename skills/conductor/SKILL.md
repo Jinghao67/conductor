@@ -1,13 +1,13 @@
 ---
-name: trunkline
+name: conductor
 description: Use when a complex task needs multiple interactive branches, subagents, or AI coding threads while keeping the master session context clean through explicit branch briefs, completion reports, and user-approved merges. Especially useful with grill-me, Trellis, research, implementation, writing, and planning workflows that risk context pollution.
 ---
 
-# Trunkline
+# Conductor
 
 ## Purpose
 
-`trunkline` is a context isolation and branch registry protocol. It keeps one master session clean while messy exploration, implementation, research, review, or learning happens in separate user-interactive branch sessions.
+`conductor` is a context isolation and branch registry protocol. It keeps one master session clean while messy exploration, implementation, research, review, or learning happens in separate user-interactive branch sessions.
 
 Use it to decide whether a request belongs in the master session, an interactive branch, an explainer sidecar, or a merge flow. It does not replace Trellis executors or other workflow agents; it governs how branches are created, tracked, completed, and optionally merged.
 
@@ -111,25 +111,25 @@ When the master snapshot changes in a way that affects an active branch, mark th
 
 ## Trellis Best Practice
 
-With Trellis, map `trunkline` like this:
+With Trellis, map `conductor` like this:
 
 - master session: parent/root task
 - interactive branch: Trellis child task plus a user-enterable AI coding thread
 - explainer: sidecar AI coding thread, not a Trellis child task by default
 - branch map: parent task `branch-map.md`
-- machine binding: `task.json.meta.trunkline`
+- machine binding: `task.json.meta.conductor`
 
 Prefer Trellis scripts such as `task.py create --parent` or `task.py add-subtask` for parent/child relationships. Do not manually edit `parent` or `children` unless Trellis scripts are unavailable or fail.
 
-Use `task.json.meta.trunkline` only for small machine-readable fields:
+Use `task.json.meta.conductor` only for small machine-readable fields:
 
 ```json
 {
-  "trunkline": {
-    "branch_id": "TL-001",
+  "conductor": {
+    "branch_id": "CD-001",
     "branch_type": "interactive",
     "role": "research",
-    "parent_branch_id": "TL-ROOT",
+    "parent_branch_id": "CD-ROOT",
     "thread_id": "thr_xxx",
     "branch_brief_path": ".trellis/tasks/example/branch-brief.md",
     "completion_report_path": ".trellis/tasks/example/completion-report.md",
@@ -147,7 +147,7 @@ Do not add branch briefs, completion reports, or raw conversation summaries to `
 
 If Trellis is not available, maintain:
 
-- `trunkline.yaml` as the machine-readable registry
+- `conductor.yaml` as the machine-readable registry
 - `branch-map.md` as the human-readable snapshot
 - Mermaid inside `branch-map.md` for visualization
 
