@@ -1,6 +1,6 @@
 ---
 name: conductor
-description: Use when a complex task needs multiple interactive branches, subagents, or AI coding threads while keeping the master session context clean through explicit branch briefs, completion reports, and user-approved merges. Especially useful with grill-me, Trellis, research, implementation, writing, and planning workflows that risk context pollution.
+description: Use when a complex task needs dependency-aware interactive branches, subagents, or AI coding threads while keeping the master session context clean through explicit branch briefs, completion reports, wave planning, and user-approved merges. Especially useful with grill-me, Trellis, research, implementation, writing, and planning workflows that risk context pollution.
 ---
 
 # Conductor
@@ -21,6 +21,7 @@ Use it to decide whether a request belongs in the master session, an interactive
 - The master session only edits and merges branch context after the user explicitly chooses to merge that completed branch.
 - Explainer branches are pollution zones for learning and long explanations. They default to no merge.
 - Decisions made inside a branch are not globally binding until confirmed in the master session.
+- Do not assume all branches can run in parallel. Always run a dependency pass before opening branches.
 
 ## Routing
 
@@ -32,6 +33,34 @@ Whenever this skill is active, route each new request before acting:
 4. Enter merge flow only after a branch is user-confirmed complete.
 
 Keep this routing lightweight. Do not turn every message into process ceremony.
+
+## Dependency Pass And Wave Plan
+
+Before creating or opening branches, identify execution order. Many branches depend on outputs from earlier branches and must remain `planned` or `blocked` until their prerequisites are done.
+
+Classify each proposed branch:
+
+- `ready_parallel`: can start now from the current master snapshot without waiting on another branch.
+- `dependent`: needs a specific branch output, decision, artifact, or user confirmation first.
+- `gate`: a review, merge, or master-session decision required before the next wave can start.
+- `optional`: useful but not on the critical path.
+- `explainer`: can run as a sidecar unless the user explicitly makes it blocking.
+
+Output a compact wave plan before creating threads:
+
+| Wave | Branches | Prerequisites | Gate to unlock next wave |
+| --- | --- | --- | --- |
+| 0 | master decisions | none | user confirms scope |
+| 1 | branches that can run now | current snapshot | completion reports reviewed |
+| 2 | dependent branches | Wave 1 outputs | merge or user decision |
+
+Rules:
+
+- Only branches in the current unlocked wave should become active by default.
+- Later-wave branches may be recorded as `planned`; mark them `blocked` if the user tries to start them before prerequisites are met.
+- Parallel means "safe to run from the same snapshot without needing each other's outputs", not merely "different topics".
+- If dependencies are ambiguous, ask the user to confirm the order before creating branch threads.
+- After a wave completes, update the snapshot, note what it unlocks, and then propose the next wave.
 
 ## Branch State Machine
 
@@ -58,9 +87,13 @@ Create branches only after user confirmation. First show:
 
 - proposed branch title and role
 - why it should be a branch
+- whether it is in the current wave or waiting on prerequisites
+- dependencies, unblocks, and gate condition
 - expected artifact
 - completion criteria
 - whether it needs a Trellis child task, an AI coding thread, or both
+
+Create only current-wave branches by default. Do not create all planned branch threads at once unless the user explicitly requests that.
 
 After confirmation, write a branch brief using `references/branch-brief-template.md`. If thread tools are available, create or bind an AI coding thread and give it only the branch brief as the initial prompt. Record the returned `thread_id`; a Codex deep link such as `codex://threads/<thread-id>` is optional when using Codex and is not the source of truth.
 
@@ -136,6 +169,11 @@ Use `task.json.meta.conductor` only for small machine-readable fields:
     "status": "active",
     "brief_version": 1,
     "based_on_snapshot_id": "snap-2026-06-03-001",
+    "execution_wave": 1,
+    "depends_on": [],
+    "unblocks": ["CD-002"],
+    "start_policy": "current_wave_only",
+    "gate_condition": "completion_report_ready",
     "merge_policy": "explicit_user_confirm"
   }
 }

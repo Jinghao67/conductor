@@ -34,5 +34,5 @@ Suggested procedure:
    - how to invoke the skill in a fresh Codex session
 
 Trigger phrase:
-Use $conductor to split this complex task into interactive branches, keep the master session clean, and only merge approved completion reports.
+Use $conductor to split this complex task into dependency-aware interactive branches, keep the master session clean, and only merge approved completion reports.
 ```

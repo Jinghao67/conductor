@@ -26,5 +26,5 @@ Steps:
 5. Verify the installed files.
 6. Report the install path, any backup path, validation result, and the exact trigger phrase:
 
-Use $conductor to split this complex task into interactive branches, keep the master session clean, and only merge approved completion reports.
+Use $conductor to split this complex task into dependency-aware interactive branches, keep the master session clean, and only merge approved completion reports.
 ```

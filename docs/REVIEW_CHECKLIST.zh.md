@@ -14,6 +14,15 @@
 - [ ] completion report 是否只在用户确认分支完成后生成？
 - [ ] 合并是否只在用户明确确认后发生？
 - [ ] explainer 是否默认不合并？
+- [ ] 是否明确禁止默认把所有分支并行启动？
+
+## 依赖与顺序
+
+- [ ] 是否在创建分支前先做 dependency pass？
+- [ ] 是否能区分当前可并行 wave 和后续依赖 wave？
+- [ ] blocked/planned 分支是否清楚记录前置条件？
+- [ ] branch brief 是否包含 `depends_on`、`execution_wave`、`gate_condition`？
+- [ ] Trellis metadata 是否能表达依赖和解锁关系？
 
 ## Trellis 集成
 

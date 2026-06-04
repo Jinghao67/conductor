@@ -5,6 +5,7 @@
 ![Clean master](https://img.shields.io/badge/master-clean-2ea44f)
 ![Dirty sidecar](https://img.shields.io/badge/dirty_sidecar-welcome-f9c74f)
 ![Interactive branches](https://img.shields.io/badge/branches-interactive-3b82f6)
+![Dependency-aware](https://img.shields.io/badge/order-dependency_aware-f97316)
 ![Explicit merge gate](https://img.shields.io/badge/merge-explicit_only-ef4444)
 ![Codex + Claude Code](https://img.shields.io/badge/works_with-Codex_%2B_Claude_Code-8b5cf6)
 
@@ -36,6 +37,7 @@ Even after workflows like Superpowers or grill-me, users may still not fully und
 | Dirty sidecar | A dedicated explainer session absorbs long explanations, background learning, and "I do not fully understand this yet" questions. | Users can learn freely without contaminating the master session. |
 | Interactive branches | Subagents are user-enterable sessions, not invisible background workers. | You can steer, question, and refine each branch without manually reopening sessions or reconstructing context. |
 | Automatic branch briefs | Conductor prepares the right starting context for each branch. | The user does not have to repeatedly paste goals, constraints, and hand-written context. |
+| Dependency-aware waves | Conductor decides which branches can run now and which must wait for earlier outputs. | Work starts in the right order instead of pretending every subagent can run in parallel. |
 | Explicit merge gate | A branch only returns through a completion report after user-confirmed completion. | The master context grows through deliberate knowledge, not accidental context spillover. |
 | Visual registry | Branch maps, snapshots, and Trellis-compatible metadata track where work lives. | The process becomes auditable, recoverable, and easier to roll back. |
 
@@ -85,7 +87,7 @@ bash scripts/install.sh
 Then start a new Codex session and invoke:
 
 ```text
-Use $conductor to split this complex task into interactive branches, keep the master session clean, and only merge approved completion reports.
+Use $conductor to split this complex task into dependency-aware interactive branches, keep the master session clean, and only merge approved completion reports.
 ```
 
 ## AI-Assisted Install
@@ -104,10 +106,11 @@ Conductor follows a few hard rules:
 1. The master session owns global context only.
 2. Branch sessions are interactive threads, not one-shot background agents.
 3. Branches receive only a brief, approved summaries, explicit file references, and messages inside their own thread.
-4. Completion reports are generated only after the user confirms branch completion.
-5. The master session merges only after explicit user approval.
-6. Explainer branches default to no merge.
-7. Branch-local global decisions must be confirmed in the master session.
+4. Branches are not assumed parallel; Conductor plans dependency-aware waves before opening threads.
+5. Completion reports are generated only after the user confirms branch completion.
+6. The master session merges only after explicit user approval.
+7. Explainer branches default to no merge.
+8. Branch-local global decisions must be confirmed in the master session.
 
 ## Trellis Best Practice
 
@@ -118,6 +121,7 @@ With Trellis, Conductor maps naturally onto parent and child tasks:
 - Codex / Claude Code thread: user-enterable conversation for the branch
 - `branch-map.md`: human-readable branch view
 - `task.json.meta.conductor`: minimal machine-readable binding
+- dependency fields: `execution_wave`, `depends_on`, `unblocks`, `gate_condition`
 
 Conductor should prefer Trellis task scripts for parent/child relationships and should not use `implement.jsonl` or `check.jsonl` as a dumping ground for branch chat history.
 
@@ -135,11 +139,13 @@ Recommended flow:
 
 1. Start with grill-me in the master session.
 2. When multiple independent directions appear, enable Conductor.
-3. Map the master session to a Trellis parent/root task.
-4. Map each interactive branch to a Trellis child task and a user-enterable AI coding thread.
-5. Keep the dirty explainer sidecar outside Trellis child tasks by default.
-6. Generate completion reports only after the user confirms a branch is done.
-7. Merge only the approved compressed report back into the master session.
+3. Run a dependency pass before opening threads: identify what can run now, what must wait, and what gate unlocks the next wave.
+4. Map the master session to a Trellis parent/root task.
+5. Map current-wave interactive branches to Trellis child tasks and user-enterable AI coding threads.
+6. Keep dependent branches as planned or blocked until their prerequisites are done.
+7. Keep the dirty explainer sidecar outside Trellis child tasks by default.
+8. Generate completion reports only after the user confirms a branch is done.
+9. Merge only the approved compressed report back into the master session.
 
 Copyable starter prompt:
 
@@ -148,7 +154,9 @@ Use $grill-me to clarify and pressure-test my requirements first. Once the discu
 
 Treat this session as the master session. Keep only global goals, constraints, the Trellis branch map, key decisions, risks, and approved summaries here.
 
-Use Trellis to persist the structure: the master session maps to a parent/root task, and each interactive branch maps to a Trellis child task plus a user-enterable AI coding thread.
+Before opening branch threads, run a dependency pass. Separate branches that can run in the same wave from branches that must wait for earlier outputs, decisions, or completion reports.
+
+Use Trellis to persist the structure: the master session maps to a parent/root task, and each current-wave interactive branch maps to a Trellis child task plus a user-enterable AI coding thread. Keep later-wave branches planned or blocked until their prerequisites are done.
 
 Split complex exploration, implementation, review, and research into interactive branches. Create a dirty explainer sidecar for questions I do not fully understand; do not merge that sidecar into the master session by default.
 

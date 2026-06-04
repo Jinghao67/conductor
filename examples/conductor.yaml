@@ -4,6 +4,21 @@ root:
   mode: trunk
   status: active
   snapshot_id: snap-2026-06-03-001
+  current_wave: 1
+
+waves:
+  - wave: 0
+    branches: [CD-ROOT]
+    prerequisites: []
+    gate_condition: scope_confirmed
+  - wave: 1
+    branches: [CD-001]
+    prerequisites: [CD-ROOT]
+    gate_condition: completion_report_ready
+  - wave: 2
+    branches: [CD-002]
+    prerequisites: [CD-001]
+    gate_condition: user_confirms_merge_or_next_step
 
 branches:
   - id: CD-001
@@ -15,8 +30,28 @@ branches:
     thread_id: thr_example_api_contract
     merge_policy: explicit_user_confirm
     based_on_snapshot_id: snap-2026-06-03-001
+    execution_wave: 1
+    depends_on: [CD-ROOT]
+    unblocks: [CD-002]
+    start_policy: current_wave_only
+    gate_condition: completion_report_ready
     branch_brief_path: .trellis/tasks/api-contract/branch-brief.md
     completion_report_path: .trellis/tasks/api-contract/completion-report.md
+
+  - id: CD-002
+    title: Implementation plan from API contract
+    type: interactive
+    role: implementation
+    status: planned
+    task_dir: .trellis/tasks/implementation-plan
+    thread_id:
+    merge_policy: explicit_user_confirm
+    based_on_snapshot_id: snap-2026-06-03-001
+    execution_wave: 2
+    depends_on: [CD-001]
+    unblocks: []
+    start_policy: wait_for_prerequisite
+    gate_condition: CD-001 completion_report_ready
 
   - id: CD-E01
     title: Explain Trellis JSONL context
@@ -26,6 +61,10 @@ branches:
     thread_id: thr_example_explainer
     merge_policy: no_merge_by_default
     based_on_snapshot_id: snap-2026-06-03-001
+    execution_wave: sidecar
+    depends_on: []
+    unblocks: []
+    start_policy: sidecar_non_blocking
 
 snapshots:
   - id: snap-2026-06-03-001

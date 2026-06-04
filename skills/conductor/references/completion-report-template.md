@@ -8,6 +8,12 @@ Summarize the completed branch outcome in 3-6 sentences.
 
 - ...
 
+## Dependency Outputs
+
+- Unblocks:
+- Outputs required by later branches:
+- Gate status:
+
 ## Decisions Made Locally
 
 - ...

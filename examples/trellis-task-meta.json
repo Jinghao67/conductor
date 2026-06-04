@@ -13,6 +13,15 @@
       "status": "active",
       "brief_version": 1,
       "based_on_snapshot_id": "snap-2026-06-03-001",
+      "execution_wave": 1,
+      "depends_on": [
+        "CD-ROOT"
+      ],
+      "unblocks": [
+        "CD-002"
+      ],
+      "start_policy": "current_wave_only",
+      "gate_condition": "completion_report_ready",
       "merge_policy": "explicit_user_confirm"
     }
   }

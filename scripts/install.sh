@@ -58,4 +58,4 @@ fi
 
 echo
 echo "Next: start a new Codex session and say:"
-echo "Use \$conductor to split this complex task into interactive branches, keep the master session clean, and only merge approved completion reports."
+echo "Use \$conductor to split this complex task into dependency-aware interactive branches, keep the master session clean, and only merge approved completion reports."

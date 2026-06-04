@@ -13,6 +13,16 @@
 
 State one precise outcome.
 
+## Dependency / Order
+
+- Execution wave:
+- Depends on:
+- Required inputs before start:
+- Can run in parallel with:
+- Unblocks:
+- Gate condition:
+- Start policy: current wave only / wait for prerequisite / optional
+
 ## In Scope
 
 - ...

@@ -12,6 +12,7 @@
 - 子分支完成后，只有用户确认完成才生成 `completion report`。
 - 主 session 只有在用户明确选择并入后，才读取 completion report 并压缩合并。
 - explainer 是学习和解释污染区，默认不并入主 session。
+- 打开分支前必须先做依赖分析，区分当前可并行 wave、后续依赖 wave 和需要 gate 的任务。
 
 ## 状态机
 
@@ -30,6 +31,26 @@
 
 默认 active 分支上限为 3。创建第 4 个 active 分支前，应建议用户先 park、完成或归档一个现有分支。
 
+## 依赖分析与 Wave Plan
+
+Conductor 不应默认所有子分支都能并行。创建 thread 或 Trellis child task 前，必须先判断：
+
+- 哪些分支能基于当前 master snapshot 同时开始
+- 哪些分支必须等待前置分支的产物、决策或 completion report
+- 哪些节点是 gate，例如用户确认、review、merge 或全局决策
+- 哪些是 optional，不在关键路径上
+- explainer 是否只是 sidecar，还是被用户明确设为 blocking
+
+推荐用 wave 表达执行顺序：
+
+| Wave | 分支 | 前置条件 | 解锁下一波的 gate |
+| --- | --- | --- | --- |
+| 0 | master decisions | none | scope confirmed |
+| 1 | 可立即并行的分支 | current snapshot | completion reports reviewed |
+| 2 | 依赖 Wave 1 的分支 | Wave 1 outputs | merge or user decision |
+
+只有当前 wave 的分支默认进入 active。后续分支先保持 `planned`，如果用户提前启动，则标记为 `blocked` 并说明缺少哪个前置条件。
+
 ## Trellis 映射
 
 在 Trellis 工作流中：
@@ -40,6 +61,7 @@
 - explainer 是 sidecar thread，默认不创建 Trellis child task。
 - `branch-map.md` 放在父任务目录，给用户看全局分叉图。
 - `task.json.meta.conductor` 保存最小机器可读绑定信息。
+- 依赖字段建议包含 `execution_wave`、`depends_on`、`unblocks`、`start_policy`、`gate_condition`。
 
 推荐结构：
 
