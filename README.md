@@ -39,7 +39,7 @@ Even after workflows like Superpowers or grill-me, users may still not fully und
 | Omniscient explainer | The dirty explainer may read across all session contexts on demand, while labeling which sources are confirmed or branch-local. | It can answer project-wide questions without becoming an authority that rewrites the master session. |
 | Dispatch room | A fixed routing session discusses whether to open new sessions, whether work is parallel or serial, and which wave should run next. | The master session avoids being polluted by meta-discussion about session planning. |
 | Interactive branches | Subagents are user-enterable sessions, not invisible background workers. | You can steer, question, and refine each branch without manually reopening sessions or reconstructing context. |
-| Stable session names | Every session gets a stable ID and title such as `[CD-001][W1][design] API contract`. | You can recognize every thread from the session list. |
+| Stable session names | Every session gets a stable ID and title such as `[CD-001][W1][task] First confirmed branch`. | You can recognize every thread from the session list. |
 | Automatic branch briefs | Conductor prepares the right starting context for each branch. | The user does not have to repeatedly paste goals, constraints, and hand-written context. |
 | Dependency-aware waves | Conductor decides which branches can run now and which must wait for earlier outputs. | Work starts in the right order instead of pretending every subagent can run in parallel. |
 | Explicit merge gate | A branch only returns through a completion report after user-confirmed completion. | The master context grows through deliberate knowledge, not accidental context spillover. |
@@ -127,12 +127,12 @@ Conductor uses stable titles so the thread list stays navigable. The initial ope
 [CD-MAIN][master] Project control room
 [CD-DISPATCH][routing] Branch planning
 [CD-E01][sidecar][explainer] Dirty questions
-[CD-001][W1][design] API contract
+[CD-001][W1][task] First confirmed branch
 ```
 
 Do not put mutable status such as `active`, `done`, or `blocked` in the title. Status belongs in the branch map and Today View.
 
-Later branches such as `[CD-002][W1][review] Risk check` or `[CD-003][W2][implement] Prototype implementation` should start as planned branch cards, not open sessions. A card becomes a session only after the user confirms the card, stable title, purpose, output, and return condition.
+Replace `task` and `First confirmed branch` with the actual role and purpose from the confirmed branch card. Later branches such as `[CD-002][W1][review] Risk check` or `[CD-003][W2][implement] Prototype implementation` should start as planned branch cards, not open sessions. A card becomes a session only after the user confirms the card, stable title, purpose, output, and return condition.
 
 ## Trellis Best Practice
 

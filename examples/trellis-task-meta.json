@@ -2,16 +2,16 @@
   "meta": {
     "conductor": {
       "branch_id": "CD-001",
-      "stable_session_title": "[CD-001][W1][design] API contract",
+      "stable_session_title": "[CD-001][W1][task] First confirmed branch",
       "branch_type": "branch",
       "interaction_mode": "user_interactive",
-      "role": "design",
+      "role": "task",
       "parent_branch_id": "CD-MAIN",
-      "task_dir": ".trellis/tasks/api-contract",
-      "thread_id": "thr_example_api_contract",
-      "codex_deep_link": "codex://threads/thr_example_api_contract",
-      "branch_brief_path": ".trellis/tasks/api-contract/branch-brief.md",
-      "completion_report_path": ".trellis/tasks/api-contract/completion-report.md",
+      "task_dir": ".trellis/tasks/first-branch",
+      "thread_id": "thr_example_first_branch",
+      "codex_deep_link": "codex://threads/thr_example_first_branch",
+      "branch_brief_path": ".trellis/tasks/first-branch/branch-brief.md",
+      "completion_report_path": ".trellis/tasks/first-branch/completion-report.md",
       "status": "active",
       "brief_version": 1,
       "based_on_snapshot_id": "snap-2026-06-03-001",
@@ -24,7 +24,7 @@
       ],
       "start_policy": "current_wave_only",
       "gate_condition": "completion_report_ready",
-      "return_condition": "API options compared and user confirms completion",
+      "return_condition": "Branch output reviewed and user confirms completion",
       "merge_policy": "explicit_user_confirm"
     }
   }

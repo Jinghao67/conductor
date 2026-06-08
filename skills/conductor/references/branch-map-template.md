@@ -45,11 +45,11 @@
 
 ## Branch Registry
 
-| Branch | Stable title | Type | Status | Wave | Depends on | Thread | Task dir | Return condition | Merge policy |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| CD-MAIN | `[CD-MAIN][master] <project>` | master | active | 0 | none |  |  | project control | approved summaries only |
-| CD-DISPATCH | `[CD-DISPATCH][routing] Branch planning` | dispatch | optional | sidecar | none |  | none | dispatch decision ready | final decisions only |
-| CD-E01 | `[CD-E01][sidecar][explainer] Dirty questions` | explainer | active | sidecar | none |  | none | question answered | no merge by default |
+| Branch | Stable title | Type | Interaction mode | Status | Wave | Depends on | Thread | Task dir | Return condition | Merge policy |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| CD-MAIN | `[CD-MAIN][master] <project>` | master | n/a | active | 0 | none |  |  | project control | approved summaries only |
+| CD-DISPATCH | `[CD-DISPATCH][routing] Branch planning` | dispatch | n/a | optional | sidecar | none |  | none | dispatch decision ready | final decisions only |
+| CD-E01 | `[CD-E01][sidecar][explainer] Dirty questions` | explainer | n/a | active | sidecar | none |  | none | question answered | no merge by default |
 
 ## Visualization
 

@@ -36,7 +36,7 @@ Use exactly these session types:
 | --- | --- | --- | --- |
 | `master` | `[CD-MAIN][master] <project>` | Project control room: global goals, branch map, confirmed decisions, risks, approved summaries | Source of truth |
 | `dispatch` | `[CD-DISPATCH][routing] Branch planning` | Discuss whether to open sessions, whether work is parallel or serial, dependency waves, and session cards | Merge only final dispatch decisions |
-| `branch` | `[CD-001][W1][design] API contract` | User-interactive work session for one bounded task | Report generated after user-confirmed completion; merge only after explicit user approval |
+| `branch` | `[CD-001][W1][task] First confirmed branch` | User-interactive work session for one bounded task | Report generated after user-confirmed completion; merge only after explicit user approval |
 | `explainer` | `[CD-E01][sidecar][explainer] Dirty questions` | Dirty learning session for questions, tutorials, and cross-session explanation | No merge by default |
 
 Rules:
@@ -66,19 +66,19 @@ Conductor creates branch cards before sessions. A branch card must include:
 Only after the user confirms the card should Conductor create or bind a real session. When entering a branch, the first visible content must be a Purpose Card:
 
 ```text
-You are branch CD-001: API contract
-Purpose: decide request/response shape
-Not for: implementation
+You are branch CD-001: First confirmed branch
+Purpose: do the first bounded task the user confirmed
+Not for: unscoped work outside the branch card
 Input: master snapshot snap-xxx; approved summaries only
 Output: completion-report.md
-Return to master when: API contract options are compared and the user confirms completion
+Return to master when: branch output is ready and the user confirms completion
 ```
 
 After creating, blocking, completing, merging, parking, or archiving a session, refresh a compact Today View in the master session:
 
 ```text
 Active now:
-- CD-001 API contract — design — waiting for user review
+- CD-001 First confirmed branch — task — waiting for user review
 - CD-E01 Dirty questions — sidecar explainer
 
 Planned, not opened:
