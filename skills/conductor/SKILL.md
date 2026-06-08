@@ -36,7 +36,7 @@ Use exactly these session types:
 | --- | --- | --- | --- |
 | `master` | `[CD-MAIN][master] <project>` | Project control room: global goals, branch map, confirmed decisions, risks, approved summaries | Source of truth |
 | `dispatch` | `[CD-DISPATCH][routing] Branch planning` | Discuss whether to open sessions, whether work is parallel or serial, dependency waves, and session cards | Merge only final dispatch decisions |
-| `branch` | `[CD-001][W1][design] API contract` | User-interactive work session for one bounded task | Completion report only after user-approved merge |
+| `branch` | `[CD-001][W1][design] API contract` | User-interactive work session for one bounded task | Report generated after user-confirmed completion; merge only after explicit user approval |
 | `explainer` | `[CD-E01][sidecar][explainer] Dirty questions` | Dirty learning session for questions, tutorials, and cross-session explanation | No merge by default |
 
 Rules:
