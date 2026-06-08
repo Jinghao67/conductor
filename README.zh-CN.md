@@ -176,21 +176,17 @@ Conductor 特别适合和 grill-me、Trellis 一起用：
 可直接复制的启动 prompt：
 
 ```text
-用 $grill-me 先追问和打磨我的需求，直到目标、非目标、约束和验收标准清楚。过程中一旦出现多个可独立推进的方向，就启用 $conductor。
+如果需求还不清楚，先用 $grill-me 追问；当工作拆成多个方向时，启用 $conductor。
 
-把当前 session 作为 master session，只保留全局目标、约束、Trellis 分支图、关键决策、风险和批准后的摘要。
+把当前 session 作为 [CD-MAIN][master] Project control room。这里只保留目标、约束、branch map、已确认决策、风险、snapshot 和批准后的摘要。
 
-使用稳定 session 命名。master 是 [CD-MAIN][master] Project control room。如果调度讨论超过几轮，就打开 [CD-DISPATCH][routing] Branch planning，把是否开 session、并行还是串行、wave plan 这些讨论从 master session 隔离出去。使用 [CD-E01][sidecar][explainer] Dirty questions 作为唯一脏解释分支。
+先创建 branch cards，再打开 session。每张 card 写清稳定标题、目的、允许上下文、预期产物、依赖/wave、完成标准和 return condition。只打开用户确认过的当前 wave branch，最多保留两个 active interactive branches；后续 branch 先保持 planned 或 blocked。
 
-打开分支线程前，先做依赖分析。区分哪些分支可以在同一 wave 并行，哪些必须等待前置输出、决策或 completion report。
+使用稳定命名：[CD-DISPATCH][routing] Branch planning 只在调度讨论需要隔离时打开；[CD-E01][sidecar][explainer] Dirty questions 是唯一脏解释区；branch 标题使用 [CD-001][W1][task] First confirmed branch 这种格式，并替换成真实角色和目的。
 
-先创建 branch cards。只有我确认 card、稳定标题、目的、产物和 return condition 后，才打开真实 session。
+打开 branch 前先做依赖分析。branch 是用户可交互 session，只接收 branch brief 和已批准 master context。explainer 可以按需读取各 session 的相关上下文来答疑，但不具备决策效力，默认不合并。
 
-用 Trellis 持久化结构：master session 映射成 parent/root task；当前 wave 的可交互分支映射成 Trellis child task，并绑定一个用户可进入的 AI coding thread。后续 wave 的分支先保持 planned 或 blocked，等前置条件完成后再打开。
-
-把复杂探索、实现、review、调研拆成可交互分支。dirty explainer sidecar 可以按需读取所有 session 的相关上下文来回答我的问题，但它的回答不具备全局决策效力，默认不要并入 master session。
-
-每个分支在打开前先生成 branch brief。只有我确认分支完成后，才生成 completion report。然后询问我是否合并回 master session，并且只合并我批准过的压缩摘要。
+我确认 branch 完成后，才生成 completion report。合并前先问我；只把我批准的压缩摘要并入 master。如果我正在用 Trellis，把 branch map、父子任务和 task.json.meta.conductor 字段持久化，但不要把原始聊天倒进 implement.jsonl 或 check.jsonl。
 ```
 
 ## 状态

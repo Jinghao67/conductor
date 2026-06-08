@@ -176,21 +176,17 @@ Recommended flow:
 Copyable starter prompt:
 
 ```text
-Use $grill-me to clarify and pressure-test my requirements first. Once the discussion reveals multiple independent directions, enable $conductor.
+Use $grill-me first if the requirements are still unclear. Once the work splits into multiple directions, enable $conductor.
 
-Treat this session as the master session. Keep only global goals, constraints, the Trellis branch map, key decisions, risks, and approved summaries here.
+Treat this session as [CD-MAIN][master] Project control room. Keep only goals, constraints, the branch map, confirmed decisions, risks, snapshots, and approved summaries here.
 
-Use stable session names. The master is [CD-MAIN][master] Project control room. If routing discussion takes more than a few turns, open [CD-DISPATCH][routing] Branch planning and keep session-planning debate out of the master session. Use [CD-E01][sidecar][explainer] Dirty questions as the one dirty explainer sidecar.
+Create branch cards before opening sessions. Each card must include stable title, purpose, allowed context, expected output, dependencies/wave, completion criteria, and return condition. Open only user-confirmed current-wave branches, with at most two active interactive branches; keep later branches planned or blocked.
 
-Before opening branch threads, run a dependency pass. Separate branches that can run in the same wave from branches that must wait for earlier outputs, decisions, or completion reports.
+Use stable names: [CD-DISPATCH][routing] Branch planning only when routing debate needs its own thread, [CD-E01][sidecar][explainer] Dirty questions as the single dirty explainer, and branch titles like [CD-001][W1][task] First confirmed branch with the real role and purpose substituted.
 
-Create branch cards first. Do not open a real session until I confirm the card, stable title, purpose, output, and return condition.
+Run a dependency pass before opening branches. Branches are user-interactive and receive only their branch brief plus approved master context. The explainer may read relevant context across sessions for questions, but is non-authoritative and no-merge by default.
 
-Use Trellis to persist the structure: the master session maps to a parent/root task, and each current-wave interactive branch maps to a Trellis child task plus a user-enterable AI coding thread. Keep later-wave branches planned or blocked until their prerequisites are done.
-
-Split complex exploration, implementation, review, and research into interactive branches. The dirty explainer sidecar may read relevant context across all sessions to answer my questions, but its answers are non-authoritative and must not merge into the master session by default.
-
-For each branch, generate a branch brief before opening the branch. Only after I confirm the branch is complete, generate a completion report. Ask me whether to merge it back into the master session, and merge only the approved compressed summary.
+After I confirm a branch is complete, generate its completion report. Ask before merging; merge only my approved compressed summary into master. If I am using Trellis, persist the branch map, parent/child tasks, and task.json.meta.conductor fields without dumping raw chat into implement.jsonl or check.jsonl.
 ```
 
 ## Status
