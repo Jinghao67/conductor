@@ -5,15 +5,16 @@
 ![Clean master](https://img.shields.io/badge/master-clean-2ea44f)
 ![Dirty sidecar](https://img.shields.io/badge/dirty_sidecar-welcome-f9c74f)
 ![Interactive branches](https://img.shields.io/badge/branches-interactive-3b82f6)
+![Dispatch room](https://img.shields.io/badge/dispatch-routing_room-06b6d4)
 ![Dependency-aware](https://img.shields.io/badge/order-dependency_aware-f97316)
 ![Explicit merge gate](https://img.shields.io/badge/merge-explicit_only-ef4444)
 ![Codex + Claude Code](https://img.shields.io/badge/works_with-Codex_%2B_Claude_Code-8b5cf6)
 
 Conductor is a context hygiene and interactive branch orchestration skill for long-running AI work. The protocol is tool-agnostic; this repository includes a Codex-compatible skill folder and one-shot prompts for Codex or Claude Code.
 
-Conductor treats a long project like an orchestra. You and the master session stay at the podium with the score: the goal, constraints, decisions, and shape of the whole piece. Each branch takes its own part, the explainer sidecar becomes the rehearsal room for questions and false starts, and only the passages worth keeping are written back into the score.
+Conductor treats a long project like an orchestra. You and the master session stay at the podium with the score: the goal, constraints, decisions, and shape of the whole piece. The dispatch room decides which parts should play now and which must wait. Each branch takes its own part, the explainer sidecar becomes the rehearsal room for questions and false starts, and only the passages worth keeping are written back into the score.
 
-It keeps the **master session** clean, cues **interactive branch sessions** for detailed work, and reserves a deliberately **dirty sidecar** where users can ask all the questions that would otherwise poison the master context. Branch context only returns to the master session through a completion report and a user-approved merge.
+It keeps the **master session** clean, cues **interactive branch sessions** for detailed work, reserves a **dispatch session** for session-planning debate, and keeps a deliberately **dirty sidecar** where users can ask all the questions that would otherwise poison the master context. Branch context only returns to the master session through a completion report and a user-approved merge.
 
 ## Why Conductor
 
@@ -35,7 +36,10 @@ Even after workflows like Superpowers or grill-me, users may still not fully und
 | --- | --- | --- |
 | Clean master | The master session keeps only goals, constraints, branch registry, decisions, risks, and approved summaries. | You can always return to the project overview without digging through noisy execution history. |
 | Dirty sidecar | A dedicated explainer session absorbs long explanations, background learning, and "I do not fully understand this yet" questions. | Users can learn freely without contaminating the master session. |
+| Omniscient explainer | The dirty explainer may read across all session contexts on demand, while labeling which sources are confirmed or branch-local. | It can answer project-wide questions without becoming an authority that rewrites the master session. |
+| Dispatch room | A fixed routing session discusses whether to open new sessions, whether work is parallel or serial, and which wave should run next. | The master session avoids being polluted by meta-discussion about session planning. |
 | Interactive branches | Subagents are user-enterable sessions, not invisible background workers. | You can steer, question, and refine each branch without manually reopening sessions or reconstructing context. |
+| Stable session names | Every session gets a stable ID and title such as `[CD-001][W1][design] API contract`. | You can recognize every thread from the session list. |
 | Automatic branch briefs | Conductor prepares the right starting context for each branch. | The user does not have to repeatedly paste goals, constraints, and hand-written context. |
 | Dependency-aware waves | Conductor decides which branches can run now and which must wait for earlier outputs. | Work starts in the right order instead of pretending every subagent can run in parallel. |
 | Explicit merge gate | A branch only returns through a completion report after user-confirmed completion. | The master context grows through deliberate knowledge, not accidental context spillover. |
@@ -87,7 +91,7 @@ bash scripts/install.sh
 Then start a new Codex session and invoke:
 
 ```text
-Use $conductor to split this complex task into dependency-aware interactive branches, keep the master session clean, and only merge approved completion reports.
+Use $conductor to keep this as the clean master session, create named branch cards before opening sessions, use CD-DISPATCH for routing debate, use CD-E01 as a context-rich dirty explainer, and merge only approved completion reports.
 ```
 
 ## AI-Assisted Install
@@ -104,21 +108,43 @@ Paste the whole prompt into the target AI coding agent. The prompts already poin
 Conductor follows a few hard rules:
 
 1. The master session owns global context only.
-2. Branch sessions are interactive threads, not one-shot background agents.
-3. Branches receive only a brief, approved summaries, explicit file references, and messages inside their own thread.
-4. Branches are not assumed parallel; Conductor plans dependency-aware waves before opening threads.
-5. Completion reports are generated only after the user confirms branch completion.
-6. The master session merges only after explicit user approval.
-7. Explainer branches default to no merge.
-8. Branch-local global decisions must be confirmed in the master session.
+2. Conductor creates visible branch cards before opening real sessions.
+3. Every session must have a stable title, purpose card, expected output, and return condition.
+4. Branch sessions are interactive threads, not one-shot background agents.
+5. Branches receive only a brief, approved summaries, explicit file references, and messages inside their own thread.
+6. Branches are not assumed parallel; Conductor plans dependency-aware waves before opening threads.
+7. The dispatch session handles session-planning debate and returns only final routing decisions to the master.
+8. Completion reports are generated only after the user confirms branch completion.
+9. The master session merges only after explicit user approval.
+10. Explainer branches default to no merge, even though the explainer may read across all session contexts on demand.
+11. Branch-local global decisions must be confirmed in the master session.
+
+## Session Naming
+
+Conductor uses stable titles so the thread list stays navigable:
+
+```text
+[CD-MAIN][master] Project control room
+[CD-DISPATCH][routing] Branch planning
+[CD-E01][sidecar][explainer] Dirty questions
+[CD-001][W1][design] API contract
+[CD-002][W1][review] Risk check
+[CD-003][W2][implement] Prototype implementation
+```
+
+Do not put mutable status such as `active`, `done`, or `blocked` in the title. Status belongs in the branch map and Today View.
+
+Before opening a real session, Conductor creates a branch card first. A card becomes a session only after the user confirms it.
 
 ## Trellis Best Practice
 
 With Trellis, Conductor maps naturally onto parent and child tasks:
 
 - parent/root task: master session
+- dispatch session: sidecar routing thread, not a Trellis child task by default
 - child task: interactive branch
 - Codex / Claude Code thread: user-enterable conversation for the branch
+- explainer sidecar: dirty context-rich explanation thread, not a Trellis child task by default
 - `branch-map.md`: human-readable branch view
 - `task.json.meta.conductor`: minimal machine-readable binding
 - dependency fields: `execution_wave`, `depends_on`, `unblocks`, `gate_condition`
@@ -139,13 +165,15 @@ Recommended flow:
 
 1. Start with grill-me in the master session.
 2. When multiple independent directions appear, enable Conductor.
-3. Run a dependency pass before opening threads: identify what can run now, what must wait, and what gate unlocks the next wave.
-4. Map the master session to a Trellis parent/root task.
-5. Map current-wave interactive branches to Trellis child tasks and user-enterable AI coding threads.
-6. Keep dependent branches as planned or blocked until their prerequisites are done.
-7. Keep the dirty explainer sidecar outside Trellis child tasks by default.
-8. Generate completion reports only after the user confirms a branch is done.
-9. Merge only the approved compressed report back into the master session.
+3. If session planning becomes multi-turn, open `[CD-DISPATCH][routing] Branch planning` and keep routing debate out of the master session.
+4. Run a dependency pass before opening threads: identify what can run now, what must wait, and what gate unlocks the next wave.
+5. Create branch cards before creating real sessions.
+6. Map the master session to a Trellis parent/root task.
+7. Map current-wave interactive branches to Trellis child tasks and user-enterable AI coding threads.
+8. Keep dependent branches as planned or blocked until their prerequisites are done.
+9. Keep `[CD-E01][sidecar][explainer] Dirty questions` outside Trellis child tasks by default, but allow it to read relevant context across all sessions on demand.
+10. Generate completion reports only after the user confirms a branch is done.
+11. Merge only the approved compressed report back into the master session.
 
 Copyable starter prompt:
 
@@ -154,11 +182,15 @@ Use $grill-me to clarify and pressure-test my requirements first. Once the discu
 
 Treat this session as the master session. Keep only global goals, constraints, the Trellis branch map, key decisions, risks, and approved summaries here.
 
+Use stable session names. The master is [CD-MAIN][master] Project control room. If routing discussion takes more than a few turns, open [CD-DISPATCH][routing] Branch planning and keep session-planning debate out of the master session. Use [CD-E01][sidecar][explainer] Dirty questions as the one dirty explainer sidecar.
+
 Before opening branch threads, run a dependency pass. Separate branches that can run in the same wave from branches that must wait for earlier outputs, decisions, or completion reports.
+
+Create branch cards first. Do not open a real session until I confirm the card, stable title, purpose, output, and return condition.
 
 Use Trellis to persist the structure: the master session maps to a parent/root task, and each current-wave interactive branch maps to a Trellis child task plus a user-enterable AI coding thread. Keep later-wave branches planned or blocked until their prerequisites are done.
 
-Split complex exploration, implementation, review, and research into interactive branches. Create a dirty explainer sidecar for questions I do not fully understand; do not merge that sidecar into the master session by default.
+Split complex exploration, implementation, review, and research into interactive branches. The dirty explainer sidecar may read relevant context across all sessions to answer my questions, but its answers are non-authoritative and must not merge into the master session by default.
 
 For each branch, generate a branch brief before opening the branch. Only after I confirm the branch is complete, generate a completion report. Ask me whether to merge it back into the master session, and merge only the approved compressed summary.
 ```

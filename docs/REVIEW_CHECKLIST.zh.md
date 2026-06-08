@@ -6,6 +6,7 @@
 
 - [ ] `conductor` 是否清楚表达为分支治理层，而不是 Trellis executor？
 - [ ] 是否清楚区分 master session、interactive branch、explainer sidecar？
+- [ ] 是否清楚区分 dispatch session 和 master session？
 - [ ] 是否避免把子分支描述成一次性后台 agent？
 
 ## Context Hygiene
@@ -14,12 +15,16 @@
 - [ ] completion report 是否只在用户确认分支完成后生成？
 - [ ] 合并是否只在用户明确确认后发生？
 - [ ] explainer 是否默认不合并？
+- [ ] explainer 是否可以按需读取所有 session 的相关上下文，同时明确其回答不具备全局决策效力？
 - [ ] 是否明确禁止默认把所有分支并行启动？
+- [ ] 是否强制先创建 branch card，再创建真实 session？
+- [ ] 是否强制稳定 session 命名，且不把 active/done/blocked 写进标题？
 
 ## 依赖与顺序
 
 - [ ] 是否在创建分支前先做 dependency pass？
 - [ ] 是否能区分当前可并行 wave 和后续依赖 wave？
+- [ ] dispatch session 是否只处理开 session、并行/串行、wave plan，不做实现/调研/解释？
 - [ ] blocked/planned 分支是否清楚记录前置条件？
 - [ ] branch brief 是否包含 `depends_on`、`execution_wave`、`gate_condition`？
 - [ ] Trellis metadata 是否能表达依赖和解锁关系？

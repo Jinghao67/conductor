@@ -5,6 +5,7 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source_dir="$repo_root/skills/conductor"
 codex_home="${CODEX_HOME:-$HOME/.codex}"
 target_dir="$codex_home/skills/conductor"
+archive_root="$codex_home/skills-archive"
 
 if [[ ! -d "$source_dir" ]]; then
   echo "Error: skill source not found: $source_dir" >&2
@@ -17,10 +18,11 @@ if [[ ! -f "$source_dir/SKILL.md" ]]; then
 fi
 
 mkdir -p "$codex_home/skills"
+mkdir -p "$archive_root"
 
 if [[ -e "$target_dir" ]]; then
   timestamp="$(date +%Y%m%d-%H%M%S)"
-  backup_dir="$target_dir.backup-$timestamp"
+  backup_dir="$archive_root/conductor.backup-$timestamp"
   mv "$target_dir" "$backup_dir"
   echo "Existing conductor skill backed up to: $backup_dir"
 fi
@@ -58,4 +60,4 @@ fi
 
 echo
 echo "Next: start a new Codex session and say:"
-echo "Use \$conductor to split this complex task into dependency-aware interactive branches, keep the master session clean, and only merge approved completion reports."
+echo "Use \$conductor to keep this as the clean master session, create named branch cards before opening sessions, use CD-DISPATCH for routing debate, use CD-E01 as a context-rich dirty explainer, and merge only approved completion reports."

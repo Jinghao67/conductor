@@ -1,19 +1,37 @@
 root:
-  id: CD-ROOT
-  title: Main session
+  id: CD-MAIN
+  title: "[CD-MAIN][master] Project control room"
   mode: trunk
   status: active
   snapshot_id: snap-2026-06-03-001
   current_wave: 1
+  active_interactive_branch_limit: 2
+
+dispatch:
+  id: CD-DISPATCH
+  title: "[CD-DISPATCH][routing] Branch planning"
+  type: dispatch
+  status: optional
+  merge_policy: final_decisions_only
+
+explainer:
+  id: CD-E01
+  title: "[CD-E01][sidecar][explainer] Dirty questions"
+  type: explainer
+  status: active
+  thread_id: thr_example_explainer
+  context_access: all_sessions_on_demand
+  authority: non_authoritative
+  merge_policy: no_merge_by_default
 
 waves:
   - wave: 0
-    branches: [CD-ROOT]
+    branches: [CD-MAIN]
     prerequisites: []
     gate_condition: scope_confirmed
   - wave: 1
     branches: [CD-001]
-    prerequisites: [CD-ROOT]
+    prerequisites: [CD-MAIN]
     gate_condition: completion_report_ready
   - wave: 2
     branches: [CD-002]
@@ -22,7 +40,8 @@ waves:
 
 branches:
   - id: CD-001
-    title: API contract exploration
+    stable_title: "[CD-001][W1][design] API contract"
+    title: API contract
     type: interactive
     role: design
     status: active
@@ -31,14 +50,16 @@ branches:
     merge_policy: explicit_user_confirm
     based_on_snapshot_id: snap-2026-06-03-001
     execution_wave: 1
-    depends_on: [CD-ROOT]
+    depends_on: [CD-MAIN]
     unblocks: [CD-002]
     start_policy: current_wave_only
     gate_condition: completion_report_ready
+    return_condition: API options compared and user confirms completion
     branch_brief_path: .trellis/tasks/api-contract/branch-brief.md
     completion_report_path: .trellis/tasks/api-contract/completion-report.md
 
   - id: CD-002
+    stable_title: "[CD-002][W2][implement] Implementation plan"
     title: Implementation plan from API contract
     type: interactive
     role: implementation
@@ -52,19 +73,7 @@ branches:
     unblocks: []
     start_policy: wait_for_prerequisite
     gate_condition: CD-001 completion_report_ready
-
-  - id: CD-E01
-    title: Explain Trellis JSONL context
-    type: explainer
-    role: explainer
-    status: active
-    thread_id: thr_example_explainer
-    merge_policy: no_merge_by_default
-    based_on_snapshot_id: snap-2026-06-03-001
-    execution_wave: sidecar
-    depends_on: []
-    unblocks: []
-    start_policy: sidecar_non_blocking
+    return_condition: implementation plan drafted from approved API contract
 
 snapshots:
   - id: snap-2026-06-03-001

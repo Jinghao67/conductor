@@ -2,9 +2,10 @@
   "meta": {
     "conductor": {
       "branch_id": "CD-001",
+      "stable_session_title": "[CD-001][W1][design] API contract",
       "branch_type": "interactive",
       "role": "design",
-      "parent_branch_id": "CD-ROOT",
+      "parent_branch_id": "CD-MAIN",
       "task_dir": ".trellis/tasks/api-contract",
       "thread_id": "thr_example_api_contract",
       "codex_deep_link": "codex://threads/thr_example_api_contract",
@@ -15,13 +16,14 @@
       "based_on_snapshot_id": "snap-2026-06-03-001",
       "execution_wave": 1,
       "depends_on": [
-        "CD-ROOT"
+        "CD-MAIN"
       ],
       "unblocks": [
         "CD-002"
       ],
       "start_policy": "current_wave_only",
       "gate_condition": "completion_report_ready",
+      "return_condition": "API options compared and user confirms completion",
       "merge_policy": "explicit_user_confirm"
     }
   }

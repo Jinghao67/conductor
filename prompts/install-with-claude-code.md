@@ -34,5 +34,5 @@ Suggested procedure:
    - how to invoke the skill in a fresh Codex session
 
 Trigger phrase:
-Use $conductor to split this complex task into dependency-aware interactive branches, keep the master session clean, and only merge approved completion reports.
+Use $conductor to keep this as the clean master session, create named branch cards before opening sessions, use CD-DISPATCH for routing debate, use CD-E01 as a context-rich dirty explainer, and merge only approved completion reports.
 ```

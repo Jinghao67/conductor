@@ -1,5 +1,23 @@
 # Branch Brief: <branch-id> - <title>
 
+## Session Identity
+
+- Stable session title:
+- Type: branch
+- Role:
+- Status:
+
+## Purpose Card
+
+```text
+You are branch <branch-id>: <title>
+Purpose:
+Not for:
+Input:
+Output:
+Return to master when:
+```
+
 ## Parent Context
 
 - Parent task:

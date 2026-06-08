@@ -1,7 +1,7 @@
 interface:
   display_name: "Conductor"
-  short_description: "Clean master, ordered branches, sidecar."
-  default_prompt: "Use $conductor to split this complex task into dependency-aware interactive branches, keep the master session clean, and only merge approved completion reports."
+  short_description: "Named sessions, clean master, sidecar."
+  default_prompt: "Use $conductor to keep this as the clean master session, create named branch cards before opening sessions, use CD-DISPATCH for routing debate, use CD-E01 as a context-rich dirty explainer, and merge only approved completion reports."
 
 policy:
   allow_implicit_invocation: true

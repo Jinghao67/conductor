@@ -14,25 +14,118 @@ Use it to decide whether a request belongs in the master session, an interactive
 ## Core Rules
 
 - The master session owns the project overview: goal, constraints, branch map, global decisions, approved summaries, risks, and next steps.
+- Use session registry first. Create visible branch cards before creating real sessions.
+- Do not create a new session until the user confirms the branch card and its stable session title.
+- Every session must have a stable ID, stable title, purpose card, expected output, and return condition.
+- Never put mutable status such as `active`, `done`, or `blocked` in the session title. Status belongs in the branch map or Today View.
 - Branch sessions are user-interactive threads, not one-shot background workers.
 - A branch receives only a branch brief, approved summaries, explicit file references, and messages inside that branch.
 - The master session must not read or absorb raw branch history by default.
 - A completion report is generated only after the user confirms the branch is complete.
 - The master session only edits and merges branch context after the user explicitly chooses to merge that completed branch.
 - Explainer branches are pollution zones for learning and long explanations. They default to no merge.
+- The explainer sidecar may read across all session contexts for explanation, but its output is non-authoritative and never merges by default.
 - Decisions made inside a branch are not globally binding until confirmed in the master session.
 - Do not assume all branches can run in parallel. Always run a dependency pass before opening branches.
+
+## Session Types And Names
+
+Use exactly these session types:
+
+| Type | Stable title pattern | Purpose | Default merge behavior |
+| --- | --- | --- | --- |
+| `master` | `[CD-MAIN][master] <project>` | Project control room: global goals, branch map, confirmed decisions, risks, approved summaries | Source of truth |
+| `dispatch` | `[CD-DISPATCH][routing] Branch planning` | Discuss whether to open sessions, whether work is parallel or serial, dependency waves, and session cards | Merge only final dispatch decisions |
+| `branch` | `[CD-001][W1][design] API contract` | User-interactive work session for one bounded task | Completion report only after user-approved merge |
+| `explainer` | `[CD-E01][sidecar][explainer] Dirty questions` | Dirty learning session for questions, tutorials, and cross-session explanation | No merge by default |
+
+Rules:
+
+- Session titles must start with the Conductor ID.
+- Session titles must include role and wave when relevant.
+- Session titles must be short enough to identify in a thread list.
+- Do not create multiple explainer sessions. Use one fixed explainer per project.
+- Do not create multiple dispatch sessions. Use one fixed dispatch session per project.
+- Prefer at most 2 active interactive branch sessions, plus the optional dispatch session and fixed explainer sidecar.
+
+## Session Registry First
+
+Conductor creates branch cards before sessions. A branch card must include:
+
+- ID and stable session title
+- type and role
+- one-sentence purpose
+- why it exists
+- dependency/wave placement
+- allowed context
+- expected artifact
+- completion criteria
+- return condition
+- whether it should open now, stay planned, or stay blocked
+
+Only after the user confirms the card should Conductor create or bind a real session. When entering a branch, the first visible content must be a Purpose Card:
+
+```text
+You are branch CD-001: API contract
+Purpose: decide request/response shape
+Not for: implementation
+Input: master snapshot snap-xxx; approved summaries only
+Output: completion-report.md
+Return to master when: API contract options are compared and the user confirms completion
+```
+
+After creating, blocking, completing, merging, parking, or archiving a session, refresh a compact Today View in the master session:
+
+```text
+Active now:
+- CD-001 API contract — design — waiting for user review
+- CD-E01 Dirty questions — sidecar explainer
+
+Planned, not opened:
+- CD-002 Implementation plan — waits for CD-001
+
+Merge pending:
+- none
+```
 
 ## Routing
 
 Whenever this skill is active, route each new request before acting:
 
 1. Keep in master session if it changes global goals, scope, constraints, priorities, branch structure, merge decisions, or project snapshots.
-2. Create or use an interactive branch if the work is exploratory, implementation-heavy, research-heavy, review-heavy, or likely to produce many intermediate details.
-3. Send to the explainer sidecar if the user wants long-form explanation, background learning, conceptual clarification, or tutorial-style help.
-4. Enter merge flow only after a branch is user-confirmed complete.
+2. Use the dispatch session if the conversation is mainly about whether to open sessions, whether tasks are parallel or serial, dependency order, wave planning, or branch-card design.
+3. Create or use an interactive branch if the work is exploratory, implementation-heavy, research-heavy, review-heavy, or likely to produce many intermediate details.
+4. Send to the explainer sidecar if the user wants long-form explanation, background learning, conceptual clarification, or tutorial-style help.
+5. Enter merge flow only after a branch is user-confirmed complete.
 
 Keep this routing lightweight. Do not turn every message into process ceremony.
+
+## Dispatch Session
+
+Do not open the dispatch session by default. Suggest opening `[CD-DISPATCH][routing] Branch planning` when:
+
+- branch planning takes more than 2-3 turns
+- there are more than 3 candidate branch cards
+- dependency order is unclear
+- the user asks whether work should be parallel or serial
+- session proliferation is starting to make the project hard to navigate
+
+The dispatch session is isolated from the master session. It may discuss:
+
+- which sessions should exist
+- which branches should be planned, opened, parked, blocked, or archived
+- which work can run in parallel and which must be serial
+- branch titles, roles, expected outputs, and completion criteria
+- active-session budget
+
+The dispatch session must not do implementation, research, review, or long-form explanation. It must not read raw branch histories by default. It returns only a compact dispatch decision to the master session, for example:
+
+```text
+Dispatch decision:
+- Open CD-001 and CD-E01 now.
+- Keep CD-002 planned until CD-001 completion report is ready.
+- Do not open implementation branch yet.
+```
 
 ## Dependency Pass And Wave Plan
 
@@ -79,12 +172,13 @@ Use these stable states:
 | `rejected` | User chose not to merge | archive |
 | `archived` | Hidden from active view | reopen |
 
-Default active branch limit: 3. If creating a fourth active branch, suggest parking, completing, or archiving an existing branch first.
+Default active interactive branch limit: 2. The fixed explainer sidecar and optional dispatch session do not count as interactive branches. If creating a third active branch, suggest parking, completing, or archiving an existing branch first.
 
 ## Creating Branches
 
 Create branches only after user confirmation. First show:
 
+- stable session title
 - proposed branch title and role
 - why it should be a branch
 - whether it is in the current wave or waiting on prerequisites
@@ -95,7 +189,7 @@ Create branches only after user confirmation. First show:
 
 Create only current-wave branches by default. Do not create all planned branch threads at once unless the user explicitly requests that.
 
-After confirmation, write a branch brief using `references/branch-brief-template.md`. If thread tools are available, create or bind an AI coding thread and give it only the branch brief as the initial prompt. Record the returned `thread_id`; a Codex deep link such as `codex://threads/<thread-id>` is optional when using Codex and is not the source of truth.
+After confirmation, write a branch brief using `references/branch-brief-template.md`. If thread tools are available, create or bind an AI coding thread, set the thread title to the stable session title when possible, and give it only the branch brief as the initial prompt. Record the returned `thread_id`; a Codex deep link such as `codex://threads/<thread-id>` is optional when using Codex and is not the source of truth.
 
 If thread creation is unavailable, create the brief and ask the user to start a separate session with it.
 
@@ -114,6 +208,14 @@ Do not read raw branch history unless the user explicitly asks to debug or audit
 ## Explainer Sidecar
 
 Use one explainer thread per project. It is for questions that would heavily pollute context: tutorials, long derivations, conceptual gaps, background knowledge, and repeated clarification.
+
+The explainer is context-rich but non-authoritative. It may read across all session contexts to answer user questions, but should load only the relevant context for the current question and should label source authority:
+
+- L0: master snapshot, branch map, Today View - confirmed
+- L1: branch cards and branch briefs - intended scope
+- L2: completion reports and approved summaries - reviewed outputs
+- L3: raw branch histories - branch-local and unconfirmed; read only when the user explicitly asks
+- L4: explainer history - dirty learning context
 
 Do not create a Trellis child task for the explainer by default. Represent it as a sidecar in the branch map. Only promote explainer output if the user strongly requests it and the content becomes a project decision, constraint, terminology definition, or spec/task update. Even then, merge as a very short project knowledge item, not as teaching material.
 
@@ -147,6 +249,7 @@ When the master snapshot changes in a way that affects an active branch, mark th
 With Trellis, map `conductor` like this:
 
 - master session: parent/root task
+- dispatch session: sidecar AI coding thread for branch planning; not a Trellis child task by default
 - interactive branch: Trellis child task plus a user-enterable AI coding thread
 - explainer: sidecar AI coding thread, not a Trellis child task by default
 - branch map: parent task `branch-map.md`
@@ -162,7 +265,7 @@ Use `task.json.meta.conductor` only for small machine-readable fields:
     "branch_id": "CD-001",
     "branch_type": "interactive",
     "role": "research",
-    "parent_branch_id": "CD-ROOT",
+    "parent_branch_id": "CD-MAIN",
     "thread_id": "thr_xxx",
     "branch_brief_path": ".trellis/tasks/example/branch-brief.md",
     "completion_report_path": ".trellis/tasks/example/completion-report.md",

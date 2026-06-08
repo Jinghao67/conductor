@@ -7,11 +7,14 @@
 ## 核心定位
 
 - 主 session 保存全局视图：目标、约束、分支图、全局决策、已批准摘要、风险、下一步。
+- 先创建可见 branch card，再创建真实 session；每个 session 必须有稳定 ID、稳定标题、Purpose Card、预期产物和 return condition。
+- session 标题必须能在 thread 列表里直接识别用途，例如 `[CD-001][W1][design] API contract`；不要把 `active/done/blocked` 这种会变化的状态写进标题。
+- 当“是否开 session、并行还是串行、wave 怎么排”的讨论超过几轮时，使用固定的 `[CD-DISPATCH][routing] Branch planning`，只把最终调度决策回传主 session。
 - 子分支是用户可进入、可继续对话的 AI coding thread，例如 Codex 或 Claude Code session，不是一次性后台 worker。
 - 子分支只继承 `branch brief`，不继承主 session 原始历史。
 - 子分支完成后，只有用户确认完成才生成 `completion report`。
 - 主 session 只有在用户明确选择并入后，才读取 completion report 并压缩合并。
-- explainer 是学习和解释污染区，默认不并入主 session。
+- explainer 是学习和解释污染区，默认不并入主 session；它可以按需读取所有 session 的相关上下文来回答问题，但其输出不具备全局决策效力。
 - 打开分支前必须先做依赖分析，区分当前可并行 wave、后续依赖 wave 和需要 gate 的任务。
 
 ## 状态机
@@ -29,7 +32,22 @@
 | `rejected` | 用户选择不并入 | archive |
 | `archived` | 不再活跃展示 | reopen |
 
-默认 active 分支上限为 3。创建第 4 个 active 分支前，应建议用户先 park、完成或归档一个现有分支。
+默认 active interactive branch 上限为 2。固定 explainer sidecar 和可选 dispatch session 不计入该上限。创建第 3 个 active branch 前，应建议用户先 park、完成或归档一个现有分支。
+
+## Session 命名与调度室
+
+固定命名格式：
+
+```text
+[CD-MAIN][master] Project control room
+[CD-DISPATCH][routing] Branch planning
+[CD-E01][sidecar][explainer] Dirty questions
+[CD-001][W1][design] API contract
+[CD-002][W1][review] Risk check
+[CD-003][W2][implement] Prototype implementation
+```
+
+`CD-DISPATCH` 默认不开；当候选分支超过 3 个、依赖顺序不清楚、或者分支规划讨论超过 2-3 轮时再打开。它只讨论是否开 session、哪些并行/串行、每个 session 的 purpose/output/return condition，不做实现、调研、review 或长篇解释。
 
 ## 依赖分析与 Wave Plan
 
@@ -56,9 +74,10 @@ Conductor 不应默认所有子分支都能并行。创建 thread 或 Trellis ch
 在 Trellis 工作流中：
 
 - 父任务或根任务对应 master session。
+- dispatch 是 sidecar routing thread，默认不创建 Trellis child task。
 - child task 对应 interactive branch。
 - AI coding thread 对应用户实际进入交互的分支 session。
-- explainer 是 sidecar thread，默认不创建 Trellis child task。
+- explainer 是 context-rich sidecar thread，默认不创建 Trellis child task。
 - `branch-map.md` 放在父任务目录，给用户看全局分叉图。
 - `task.json.meta.conductor` 保存最小机器可读绑定信息。
 - 依赖字段建议包含 `execution_wave`、`depends_on`、`unblocks`、`start_policy`、`gate_condition`。

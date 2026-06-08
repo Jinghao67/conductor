@@ -4,46 +4,66 @@
 
 - Snapshot id: `snap-2026-06-03-001`
 - Updated at: 2026-06-03
-- Master session: `CD-ROOT`
-- Active branch limit: 3
+- Master session: `[CD-MAIN][master] Project control room`
+- Dispatch session: `[CD-DISPATCH][routing] Branch planning`
+- Explainer sidecar: `[CD-E01][sidecar][explainer] Dirty questions`
+- Active interactive branch limit: 2
 - Current global goal: Keep the master session clean while interactive branches do detailed work.
 - Current wave: 1
+
+## Today View
+
+### Active Now
+
+- CD-001 API contract — design — waiting for user review.
+- CD-E01 Dirty questions — context-rich explainer sidecar.
+
+### Planned, Not Opened
+
+- CD-002 Implementation plan — waits for CD-001 completion report.
+
+### Dispatch
+
+- CD-DISPATCH is available for routing debate, but no dispatch thread is currently active.
 
 ## Wave Plan
 
 | Wave | Branches | Prerequisites | Gate to unlock next wave |
 | --- | --- | --- | --- |
-| 0 | CD-ROOT | none | scope confirmed |
-| 1 | CD-001 | CD-ROOT snapshot | CD-001 completion report ready |
+| 0 | CD-MAIN | none | scope confirmed |
+| 1 | CD-001 | CD-MAIN snapshot | CD-001 completion report ready |
 | 2 | CD-002 | CD-001 output | user confirms next implementation step |
 
 ## Branch Registry
 
-| Branch | Type | Status | Wave | Depends on | Thread | Task dir | Based on snapshot | Merge policy |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| CD-ROOT | master | active | 0 | none | current | .trellis/tasks/root | snap-2026-06-03-001 | approved summaries only |
-| CD-001 | interactive | active | 1 | CD-ROOT | thr_example_api_contract | .trellis/tasks/api-contract | snap-2026-06-03-001 | explicit user confirm |
-| CD-002 | interactive | planned | 2 | CD-001 | none | .trellis/tasks/implementation-plan | snap-2026-06-03-001 | explicit user confirm |
-| CD-E01 | explainer | active | sidecar | none | thr_example_explainer | none | snap-2026-06-03-001 | no merge by default |
+| Branch | Stable title | Type | Status | Wave | Depends on | Thread | Task dir | Return condition | Merge policy |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| CD-MAIN | `[CD-MAIN][master] Project control room` | master | active | 0 | none | current | .trellis/tasks/root | project control | approved summaries only |
+| CD-DISPATCH | `[CD-DISPATCH][routing] Branch planning` | dispatch | optional | sidecar | none | none | none | dispatch decision ready | final decisions only |
+| CD-001 | `[CD-001][W1][design] API contract` | interactive | active | 1 | CD-MAIN | thr_example_api_contract | .trellis/tasks/api-contract | API options compared | explicit user confirm |
+| CD-002 | `[CD-002][W2][implement] Implementation plan` | interactive | planned | 2 | CD-001 | none | .trellis/tasks/implementation-plan | implementation plan drafted | explicit user confirm |
+| CD-E01 | `[CD-E01][sidecar][explainer] Dirty questions` | explainer | active | sidecar | none | thr_example_explainer | none | question answered | no merge by default |
 
 ## Visualization
 
 ```mermaid
 flowchart TD
-  ROOT["CD-ROOT Main session / root task"]
-  B1["CD-001 API contract exploration<br/>active / interactive"]
+  ROOT["CD-MAIN Master session / root task"]
+  DISPATCH["CD-DISPATCH Branch planning<br/>optional / routing"]
+  B1["CD-001 API contract<br/>active / interactive"]
   B2["CD-002 Implementation plan<br/>planned / waits for CD-001"]
-  E1["CD-E01 Trellis JSONL explainer<br/>active / no-merge default"]
+  E1["CD-E01 Dirty questions<br/>context-rich / no-merge default"]
 
   ROOT --> B1
   B1 --> B2
+  ROOT -. routing .-> DISPATCH
   ROOT -. explainer .-> E1
 ```
 
 ## Active Branches
 
 - CD-001: Explore the API contract and produce a completion report after user-confirmed completion.
-- CD-E01: Explain Trellis JSONL context. Default no merge.
+- CD-E01: Ask confusing project questions. It may read relevant context across sessions, but default no merge.
 
 ## Planned Branches
 

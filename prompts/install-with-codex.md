@@ -26,5 +26,5 @@ Steps:
 5. Verify the installed files.
 6. Report the install path, any backup path, validation result, and the exact trigger phrase:
 
-Use $conductor to split this complex task into dependency-aware interactive branches, keep the master session clean, and only merge approved completion reports.
+Use $conductor to keep this as the clean master session, create named branch cards before opening sessions, use CD-DISPATCH for routing debate, use CD-E01 as a context-rich dirty explainer, and merge only approved completion reports.
 ```

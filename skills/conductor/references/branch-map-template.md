@@ -5,44 +5,62 @@
 - Snapshot id:
 - Updated at:
 - Master session:
-- Active branch limit: 3
+- Dispatch session:
+- Explainer sidecar:
+- Active interactive branch limit: 2
 - Current global goal:
 - Current wave:
+
+## Session Naming Rules
+
+- Master: `[CD-MAIN][master] <project>`
+- Dispatch: `[CD-DISPATCH][routing] Branch planning`
+- Explainer: `[CD-E01][sidecar][explainer] Dirty questions`
+- Branch: `[CD-001][W1][role] <short purpose>`
+- Never put mutable status such as active/done/blocked in the session title.
+
+## Today View
+
+### Active Now
+
+- ...
+
+### Planned, Not Opened
+
+- ...
+
+### Blocked / Waiting
+
+- ...
+
+### Merge Pending
+
+- ...
 
 ## Wave Plan
 
 | Wave | Branches | Prerequisites | Gate to unlock next wave |
 | --- | --- | --- | --- |
-| 0 | CD-ROOT | none | scope confirmed |
+| 0 | CD-MAIN | none | scope confirmed |
 
 ## Branch Registry
 
-| Branch | Type | Status | Wave | Depends on | Thread | Task dir | Based on snapshot | Merge policy |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| CD-ROOT | master | active | 0 | none |  |  |  | approved summaries only |
+| Branch | Stable title | Type | Status | Wave | Depends on | Thread | Task dir | Return condition | Merge policy |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| CD-MAIN | `[CD-MAIN][master] <project>` | master | active | 0 | none |  |  | project control | approved summaries only |
+| CD-DISPATCH | `[CD-DISPATCH][routing] Branch planning` | dispatch | optional | sidecar | none |  | none | dispatch decision ready | final decisions only |
+| CD-E01 | `[CD-E01][sidecar][explainer] Dirty questions` | explainer | active | sidecar | none |  | none | question answered | no merge by default |
 
 ## Visualization
 
 ```mermaid
 flowchart TD
-  ROOT["CD-ROOT Master session"]
+  ROOT["CD-MAIN Master session"]
+  DISPATCH["CD-DISPATCH Branch planning"]
+  EXPLAIN["CD-E01 Dirty explainer"]
+  ROOT -. routing .-> DISPATCH
+  ROOT -. explainer .-> EXPLAIN
 ```
-
-## Active Branches
-
-- ...
-
-## Planned Branches
-
-- ...
-
-## Blocked / Waiting On Prerequisites
-
-- ...
-
-## Merge Pending
-
-- ...
 
 ## Proposed Global Decisions
 
