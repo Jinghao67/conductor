@@ -149,19 +149,19 @@ With Trellis, Conductor maps naturally onto parent and child tasks:
 
 Conductor should prefer Trellis task scripts for parent/child relationships and should not use `implement.jsonl` or `check.jsonl` as a dumping ground for branch chat history.
 
-## Grill-me + Trellis Workflow
+## Grill-me (or grill-me-docs) + Trellis Workflow
 
-Conductor is especially useful when paired with grill-me and Trellis:
+Conductor is especially useful when paired with grill-me (or grill-me-docs) and Trellis:
 
 | Tool | Role |
 | --- | --- |
-| `grill-me` | Interrogate the idea until goals, non-goals, constraints, and acceptance criteria are clear. |
+| `grill-me` (or `grill-me-docs`) | Interrogate the idea until goals, non-goals, constraints, and acceptance criteria are clear. |
 | `Conductor` | Route context into the clean master, interactive branches, dirty explainer sidecar, or merge flow. |
 | `Trellis` | Persist the structure as parent/child tasks and keep branch artifacts discoverable. |
 
 Recommended flow:
 
-1. Start with grill-me in the master session.
+1. Start with grill-me (or grill-me-docs) in the master session.
 2. When multiple independent directions appear, enable Conductor.
 3. If session planning becomes multi-turn, open `[CD-DISPATCH][routing] Branch planning` and keep routing debate out of the master session.
 4. Run a dependency pass before opening threads: identify what can run now, what must wait, and what gate unlocks the next wave.
@@ -176,7 +176,7 @@ Recommended flow:
 Copyable starter prompt:
 
 ```text
-Use $grill-me first if the requirements are still unclear. Once the work splits into multiple directions, enable $conductor.
+Use $grill-me (or $grill-me-docs) first if the requirements are still unclear. Once the work splits into multiple directions, enable $conductor.
 
 Treat this session as [CD-MAIN][master] Project control room. Keep only goals, constraints, the branch map, confirmed decisions, risks, snapshots, and approved summaries here.
 
