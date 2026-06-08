@@ -3,7 +3,8 @@
     "conductor": {
       "branch_id": "CD-001",
       "stable_session_title": "[CD-001][W1][design] API contract",
-      "branch_type": "interactive",
+      "branch_type": "branch",
+      "interaction_mode": "user_interactive",
       "role": "design",
       "parent_branch_id": "CD-MAIN",
       "task_dir": ".trellis/tasks/api-contract",

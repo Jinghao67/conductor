@@ -263,7 +263,8 @@ Use `task.json.meta.conductor` only for small machine-readable fields:
 {
   "conductor": {
     "branch_id": "CD-001",
-    "branch_type": "interactive",
+    "branch_type": "branch",
+    "interaction_mode": "user_interactive",
     "role": "research",
     "parent_branch_id": "CD-MAIN",
     "thread_id": "thr_xxx",

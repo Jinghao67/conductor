@@ -42,7 +42,8 @@ branches:
   - id: CD-001
     stable_title: "[CD-001][W1][design] API contract"
     title: API contract
-    type: interactive
+    type: branch
+    interaction_mode: user_interactive
     role: design
     status: active
     task_dir: .trellis/tasks/api-contract
@@ -61,7 +62,8 @@ branches:
   - id: CD-002
     stable_title: "[CD-002][W2][implement] Implementation plan"
     title: Implementation plan from API contract
-    type: interactive
+    type: branch
+    interaction_mode: user_interactive
     role: implementation
     status: planned
     task_dir: .trellis/tasks/implementation-plan
