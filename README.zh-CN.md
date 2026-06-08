@@ -121,20 +121,18 @@ Conductor 遵守几条硬规则：
 
 ## Session 命名
 
-Conductor 使用稳定标题，让 thread 列表保持可导航：
+Conductor 使用稳定标题，让 thread 列表保持可导航。初始实际打开的 session 应该保持很少：通常是干净的 master、可选的 dispatch room、脏解释区，以及第一个经过用户确认的 branch。
 
 ```text
 [CD-MAIN][master] Project control room
 [CD-DISPATCH][routing] Branch planning
 [CD-E01][sidecar][explainer] Dirty questions
 [CD-001][W1][design] API contract
-[CD-002][W1][review] Risk check
-[CD-003][W2][implement] Prototype implementation
 ```
 
 不要把 `active`、`done`、`blocked` 这类会变化的状态写进标题。状态应该放在 branch map 和 Today View 里。
 
-打开真实 session 前，Conductor 必须先创建 branch card。只有用户确认后，card 才能变成 session。
+后续分支，例如 `[CD-002][W1][review] Risk check` 或 `[CD-003][W2][implement] Prototype implementation`，应该先作为 planned branch card 存在，而不是一开始就打开真实 session。只有用户确认 card、稳定标题、目的、产物和 return condition 后，card 才能变成 session。
 
 ## Trellis 最佳实践
 

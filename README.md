@@ -121,20 +121,18 @@ Conductor follows a few hard rules:
 
 ## Session Naming
 
-Conductor uses stable titles so the thread list stays navigable:
+Conductor uses stable titles so the thread list stays navigable. The initial open sessions should stay small: usually the clean master, the optional dispatch room, the dirty explainer, and the first user-confirmed branch.
 
 ```text
 [CD-MAIN][master] Project control room
 [CD-DISPATCH][routing] Branch planning
 [CD-E01][sidecar][explainer] Dirty questions
 [CD-001][W1][design] API contract
-[CD-002][W1][review] Risk check
-[CD-003][W2][implement] Prototype implementation
 ```
 
 Do not put mutable status such as `active`, `done`, or `blocked` in the title. Status belongs in the branch map and Today View.
 
-Before opening a real session, Conductor creates a branch card first. A card becomes a session only after the user confirms it.
+Later branches such as `[CD-002][W1][review] Risk check` or `[CD-003][W2][implement] Prototype implementation` should start as planned branch cards, not open sessions. A card becomes a session only after the user confirms the card, stable title, purpose, output, and return condition.
 
 ## Trellis Best Practice
 
