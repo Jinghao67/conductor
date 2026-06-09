@@ -10,7 +10,7 @@
 ![显式合并](https://img.shields.io/badge/merge-explicit_only-ef4444)
 ![Codex + Claude Code](https://img.shields.io/badge/works_with-Codex_%2B_Claude_Code-8b5cf6)
 
-Conductor 是一个用于长周期 AI 工作的上下文卫生和交互式分支编排 skill。它的协议本身不绑定工具；这个仓库提供了 Codex-compatible skill 文件夹，也提供了给 Codex 或 Claude Code 的 one-shot 安装 prompt。
+Conductor 是一个用于长周期 AI 工作的上下文卫生和交互式分支编排 skill。它的协议本身不绑定工具；这个仓库提供了 Codex-compatible skill 文件夹、Claude Code-native plugin 适配层，也提供了给 Codex 或 Claude Code 的 one-shot 安装 prompt。
 
 Conductor 把一个长项目当作一支乐队来指挥。你和 master session 站在指挥台前，手里只保留总谱：目标、约束、决策和全局结构。dispatch room 决定哪些声部现在进场、哪些必须等待。每个分支负责自己的声部；explainer sidecar 像排练室，容纳追问、试错和临时理解；真正值得留下的片段，才会被整理后写回总谱。
 
@@ -51,6 +51,12 @@ Conductor 把一个长项目当作一支乐队来指挥。你和 master session 
 .
 ├── README.md
 ├── README.zh-CN.md
+├── claude-code/
+│   ├── .claude-plugin/plugin.json
+│   ├── commands/
+│   ├── hooks/
+│   ├── scripts/
+│   └── skills/conductor-cc/
 ├── docs/
 │   ├── AI_INSTALL.zh.md
 │   ├── DESIGN.zh.md
@@ -76,6 +82,8 @@ Conductor 把一个长项目当作一支乐队来指挥。你和 master session 
 
 ## 安装
 
+### Codex Skill
+
 把 skill 文件夹复制到 Codex skills 目录：
 
 ```bash
@@ -93,6 +101,17 @@ bash scripts/install.sh
 ```text
 Use $conductor to keep this as the clean master session, create named branch cards before opening sessions, use CD-DISPATCH for routing debate, use CD-E01 as a context-rich dirty explainer, and merge only approved completion reports.
 ```
+
+### Claude Code Plugin
+
+Claude Code 用户可以使用 [`claude-code/`](claude-code/) 里的原生适配层。它把 Conductor 接到 Claude Code slash commands 和 hooks 上，让同一套协议由 Claude Code harness 来执行：
+
+```bash
+claude plugin validate ./claude-code
+claude --plugin-dir ./claude-code
+```
+
+然后在项目里运行 `/cd-init`，把当前 Claude Code session 设为 Conductor master。
 
 ## 交给 AI 一键安装
 

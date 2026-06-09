@@ -4,3 +4,8 @@ node_modules/
 .venv/
 __pycache__/
 .pytest_cache/
+
+# Conductor's own dogfooding state at repo root (runtime data, not shipped).
+# Note: downstream projects using the plugin keep their own .gitignore; the
+# plugin's guidance there is to ignore only bindings/.merge-lock/.firewall-off.
+/.conductor/
