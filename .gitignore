@@ -4,3 +4,8 @@ node_modules/
 .venv/
 __pycache__/
 .pytest_cache/
+
+# Conductor (Claude Code) session-local state — not shared across machines/sessions
+.conductor/bindings/
+.conductor/.merge-lock
+.conductor/.firewall-off
