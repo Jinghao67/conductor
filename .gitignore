@@ -5,7 +5,7 @@ node_modules/
 __pycache__/
 .pytest_cache/
 
-# Conductor (Claude Code) session-local state — not shared across machines/sessions
-.conductor/bindings/
-.conductor/.merge-lock
-.conductor/.firewall-off
+# Conductor's own dogfooding state at repo root (runtime data, not shipped).
+# Note: downstream projects using the plugin keep their own .gitignore; the
+# plugin's guidance there is to ignore only bindings/.merge-lock/.firewall-off.
+/.conductor/
