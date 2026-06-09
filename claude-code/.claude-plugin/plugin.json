@@ -1,7 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "conductor-cc",
-  "displayName": "Conductor (Claude Code)",
   "version": "0.1.0",
   "description": "Context-hygiene and branch-orchestration for long-running work. Keeps the master session clean; quarantines raw content in separate branch sessions and read-firewall subagents; enforces the protocol with hooks instead of relying on the model to comply.",
   "author": {

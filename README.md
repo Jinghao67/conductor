@@ -10,7 +10,7 @@
 ![Explicit merge gate](https://img.shields.io/badge/merge-explicit_only-ef4444)
 ![Codex + Claude Code](https://img.shields.io/badge/works_with-Codex_%2B_Claude_Code-8b5cf6)
 
-Conductor is a context hygiene and interactive branch orchestration skill for long-running AI work. The protocol is tool-agnostic; this repository includes a Codex-compatible skill folder and one-shot prompts for Codex or Claude Code.
+Conductor is a context hygiene and interactive branch orchestration skill for long-running AI work. The protocol is tool-agnostic; this repository includes a Codex-compatible skill folder, a Claude Code-native plugin adapter, and one-shot prompts for Codex or Claude Code.
 
 Conductor treats a long project like an orchestra. You and the master session stay at the podium with the score: the goal, constraints, decisions, and shape of the whole piece. The dispatch room decides which parts should play now and which must wait. Each branch takes its own part, the explainer sidecar becomes the rehearsal room for questions and false starts, and only the passages worth keeping are written back into the score.
 
@@ -51,6 +51,12 @@ Even after workflows like Superpowers or grill-me, users may still not fully und
 .
 ├── README.md
 ├── README.zh-CN.md
+├── claude-code/
+│   ├── .claude-plugin/plugin.json
+│   ├── commands/
+│   ├── hooks/
+│   ├── scripts/
+│   └── skills/conductor-cc/
 ├── docs/
 │   ├── AI_INSTALL.zh.md
 │   ├── DESIGN.zh.md
@@ -76,6 +82,8 @@ Even after workflows like Superpowers or grill-me, users may still not fully und
 
 ## Install
 
+### Codex Skill
+
 Copy the skill folder into your Codex skills directory:
 
 ```bash
@@ -93,6 +101,17 @@ Then start a new Codex session and invoke:
 ```text
 Use $conductor to keep this as the clean master session, create named branch cards before opening sessions, use CD-DISPATCH for routing debate, use CD-E01 as a context-rich dirty explainer, and merge only approved completion reports.
 ```
+
+### Claude Code Plugin
+
+Claude Code users can use the native adapter under [`claude-code/`](claude-code/). It ports Conductor into Claude Code slash commands and hooks, so the same protocol is enforced by the Claude Code harness:
+
+```bash
+claude plugin validate ./claude-code
+claude --plugin-dir ./claude-code
+```
+
+Then, inside a project, run `/cd-init` to make the current Claude Code session the Conductor master.
 
 ## AI-Assisted Install
 
