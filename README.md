@@ -15,6 +15,7 @@
 ![Dependency-aware](https://img.shields.io/badge/order-dependency_aware-f97316)
 ![Explicit merge gate](https://img.shields.io/badge/merge-explicit_only-ef4444)
 ![Codex + Claude Code](https://img.shields.io/badge/works_with-Codex_%2B_Claude_Code-8b5cf6)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 Conductor is a context hygiene and interactive branch orchestration skill for long-running AI work. The protocol is tool-agnostic; this repository includes a Codex-compatible skill folder, a Claude Code-native plugin adapter, and one-shot prompts for Codex or Claude Code.
 
@@ -57,6 +58,7 @@ Even after workflows like Superpowers or grill-me, users may still not fully und
 .
 ├── README.md
 ├── README.zh-CN.md
+├── LICENSE
 ├── claude-code/
 │   ├── .claude-plugin/plugin.json
 │   ├── commands/
@@ -216,4 +218,4 @@ After I confirm a branch is complete, generate its completion report. Ask before
 
 ## Status
 
-Initial public draft. License is intentionally left TBD.
+Initial public draft. Licensed under the [MIT License](LICENSE).

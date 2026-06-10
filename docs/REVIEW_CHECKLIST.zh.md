@@ -45,6 +45,6 @@
 ## 发布前决策
 
 - [ ] GitHub repo 名称是否使用 `conductor`？
-- [ ] 是否添加开源许可证？如果添加，选择 MIT / Apache-2.0 / 其他？
+- [x] 是否添加开源许可证？如果添加，选择 MIT / Apache-2.0 / 其他？
 - [ ] README 是否需要中文版本？
 - [ ] 是否需要 GitHub Actions 校验 skill 格式？

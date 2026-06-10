@@ -15,6 +15,7 @@
 ![依赖顺序](https://img.shields.io/badge/order-dependency_aware-f97316)
 ![显式合并](https://img.shields.io/badge/merge-explicit_only-ef4444)
 ![Codex + Claude Code](https://img.shields.io/badge/works_with-Codex_%2B_Claude_Code-8b5cf6)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 Conductor 是一个用于长周期 AI 工作的上下文卫生和交互式分支编排 skill。它的协议本身不绑定工具；这个仓库提供了 Codex-compatible skill 文件夹、Claude Code-native plugin 适配层，也提供了给 Codex 或 Claude Code 的 one-shot 安装 prompt。
 
@@ -57,6 +58,7 @@ Conductor 把一个长项目当作一支乐队来指挥。你和 master session 
 .
 ├── README.md
 ├── README.zh-CN.md
+├── LICENSE
 ├── claude-code/
 │   ├── .claude-plugin/plugin.json
 │   ├── commands/
@@ -216,4 +218,4 @@ Conductor 特别适合和 grill-me（or grill-me-docs）、Trellis 一起用：
 
 ## 状态
 
-初始公开草稿。License 目前刻意保留为 TBD。
+初始公开草稿。项目采用 [MIT License](LICENSE)。
